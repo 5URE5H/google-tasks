@@ -1,3 +1,4 @@
+import { gapi } from "gapi-script";
 import {
   createContext,
   Dispatch,
@@ -5,70 +6,88 @@ import {
   useContext,
   useEffect,
   useReducer,
-  useState,
 } from "react";
+import { CLIENT_ID } from "../config";
+import { USER_SIGNED_IN, USER_SIGNED_OUT } from "./types";
+import Login from "../components/login/Login";
+import { authorize, listTaskLists } from "../api";
 
 interface UserState {
-  isSignedIn: boolean;
   userId: string | undefined;
+  isSignedIn: boolean;
 }
 
 interface UserAction {
-  type: UserActionType;
+  type: string;
   payload?: any;
 }
 
-enum UserActionType {
-  SignedIn = "SIGNED_IN",
-  SignedOut = "SIGNED_OUT",
-}
-
-const initialState = { isSignedIn: false, userId: undefined };
+const initialState = {
+  userId: undefined,
+  isSignedIn: false,
+};
 
 type UserContextType = [UserState, Dispatch<UserAction>];
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-function userReducer(state: UserState, action: UserAction) {
+const UserReducer = (state: UserState, action: UserAction) => {
   switch (action.type) {
-    case UserActionType.SignedIn:
-      return { ...state };
-    case UserActionType.SignedOut:
-      return { ...state };
+    case USER_SIGNED_IN:
+      return { ...state, isSignedIn: true, userId: action.payload.userId };
+    case USER_SIGNED_OUT:
+      return { ...state, isSignedIn: false, userId: undefined };
     default:
       return state;
   }
-}
+};
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [state, dispatch] = useReducer(userReducer, initialState);
-  const [auth, setAuth] = useState("");
+  const [state, dispatch] = useReducer(UserReducer, initialState);
 
   useEffect(() => {
-    (window as any).gapi.load("client:auth2", () => {
-      (window as any).gapi.client
+    function start() {
+      gapi.client
         .init({
-          clientId:
-            "319564862813-vf3urpmn294m54rc5hdvl2qn6dmo80i5.apps.googleusercontent.com",
-          scope: "email",
+          clientId: CLIENT_ID,
+          scope: "https://www.googleapis.com/auth/tasks",
         })
         .then(() => {
-          setAuth((window as any).gapi.auth2.getAuthInstance());
-          console.log(auth);
-          // this.onAuthChange(this.auth.isSignedIn.get());
-          // this.auth.isSignedIn.listen(this.onAuthChange);
+          console.log("auth...");
+          authorize({ immediate: false }).then((res) => {
+            console.log("auth", listTaskLists());
+          });
+
+          const isUserSignedIn = gapi.auth2
+            .getAuthInstance()
+            .isSignedIn.get() as boolean;
+
+          if (isUserSignedIn)
+            dispatch({ type: USER_SIGNED_IN, payload: { userId: "test" } });
+          else dispatch({ type: USER_SIGNED_OUT });
+        })
+        .catch(() => {
+          dispatch({ type: USER_SIGNED_OUT });
         });
-    });
+    }
+
+    gapi.load("client:auth2", start);
+    // console.log("auth...");
+    // authorize({ immediate: false }).then((res) => {
+    //   console.log("auth", res);
+    // });
   }, []);
 
-  return (
+  return !state.isSignedIn ? (
+    <Login />
+  ) : (
     <UserContext.Provider value={[state, dispatch]}>
       {children}
     </UserContext.Provider>
   );
 };
 
-export const useUser = (): UserContextType => {
+export const useUserSession = () => {
   const context = useContext(UserContext);
 
   if (!context)

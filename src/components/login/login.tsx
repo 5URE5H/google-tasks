@@ -1,9 +1,8 @@
 import { FunctionComponent } from "react";
 import { GoogleLogin } from "react-google-login";
+import { CLIENT_ID } from "../../config";
 
 interface LoginProps {}
-
-const clientId = "319564862813-vf3urpmn294m54rc5hdvl2qn6dmo80i5.apps.googleusercontent.com";
 
 const Login: FunctionComponent<LoginProps> = () => {
   const onSuccess = (res: any) => {
@@ -17,7 +16,7 @@ const Login: FunctionComponent<LoginProps> = () => {
   return (
     <div id="singInButton">
       <GoogleLogin
-        clientId={clientId}
+        clientId={CLIENT_ID}
         buttonText="Login with Google"
         onSuccess={onSuccess}
         onFailure={onFailure}

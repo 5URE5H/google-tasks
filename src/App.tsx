@@ -1,31 +1,22 @@
-import { useEffect } from "react";
 import "./App.css";
-import TaskBody from "./components/TaskBody";
 import { UserProvider } from "./store/User.store";
-import { gapi } from "gapi-script";
-import Login from "./components/login/login";
-import Logout from "./components/login/logout";
-
-const clientId =
-  "319564862813-vf3urpmn294m54rc5hdvl2qn6dmo80i5.apps.googleusercontent.com";
+import Login from "./components/login/Login";
+import Logout from "./components/login/Logout";
+import { useEffect } from "react";
+import { listTaskLists } from "./api";
+import TaskBody from "./components/TaskBody";
 
 function App() {
-  useEffect(() => {
-    function start() {
-      gapi.client.init({
-        clientId: clientId,
-        scope: "",
-      });
-    }
-
-    gapi.load("client:auth2", start);
-  });
+  useEffect(() => {}, []);
 
   return (
-    <div className="App">
-      <Login />
-      <Logout />
-    </div>
+    <UserProvider>
+      <div className="App">
+        <TaskBody />
+        <Login />
+        <Logout />
+      </div>
+    </UserProvider>
   );
 }
 
