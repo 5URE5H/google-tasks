@@ -1,10 +1,8 @@
 import "./App.css";
 import { UserProvider } from "./store/User.store";
-import Login from "./components/login/Login";
-import Logout from "./components/login/Logout";
 import { useEffect } from "react";
-import { listTaskLists } from "./api";
 import TaskBody from "./components/TaskBody";
+import { TaskListProvider } from "./store/TaskList.store";
 
 function App() {
   useEffect(() => {}, []);
@@ -12,9 +10,9 @@ function App() {
   return (
     <UserProvider>
       <div className="App">
-        <TaskBody />
-        <Login />
-        <Logout />
+        <TaskListProvider>
+          <TaskBody />
+        </TaskListProvider>
       </div>
     </UserProvider>
   );

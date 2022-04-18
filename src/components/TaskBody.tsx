@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import { listTaskLists } from "../api";
 import { useUserSession } from "../store/User.store";
 import TaskContainer from "./TaskContainer";
 import TaskDrawer from "./TaskDrawer";

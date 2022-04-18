@@ -7,7 +7,7 @@ export const authorize = (params: { immediate: any }) => {
     gapi.auth.authorize(
       {
         client_id: CLIENT_ID,
-        scope: "https://www.googleapis.com/auth/tasks",
+        scope: SCOPES,
         immediate: params.immediate,
         cookie_policy: "single_host_origin",
       },
@@ -16,7 +16,9 @@ export const authorize = (params: { immediate: any }) => {
           return reject(authResult.error);
         }
         // eslint-disable-next-line
-        return gapi.client.load("tasks", "v1", () => resolve());
+        return gapi.client.load("tasks", "v1", () =>
+          gapi.client.load("plus", "v1", () => resolve())
+        );
       }
     );
   });
@@ -47,13 +49,13 @@ export const logout = () => {
   });
 };
 
-export const listTaskLists = () => {
+export const getTaskLists = () => {
   const request = gapi.client.tasks.tasklists.list();
 
   return makeRequest(request);
 };
 
-export const showTaskList = (taskListId: any) => {
+export const getTaskList = (taskListId: any) => {
   const request = gapi.client.tasks.tasklists.get({
     tasklist: taskListId,
   });
@@ -61,7 +63,7 @@ export const showTaskList = (taskListId: any) => {
   return makeRequest(request);
 };
 
-export const insertTaskList = ({ title }: any) => {
+export const addTaskList = ({ title }: any) => {
   const request = gapi.client.tasks.tasklists.insert({
     title,
   });
@@ -87,7 +89,7 @@ export const deleteTaskList = ({ taskListId }: any) => {
   return makeRequest(request);
 };
 
-export const listTasks = (taskListId: any) => {
+export const getTasks = (taskListId: any) => {
   const request = gapi.client.tasks.tasks.list({
     tasklist: taskListId,
   });
@@ -95,7 +97,7 @@ export const listTasks = (taskListId: any) => {
   return makeRequest(request);
 };
 
-export const insertTask = ({ taskListId, ...params }: any) => {
+export const addTask = ({ taskListId, ...params }: any) => {
   const request = gapi.client.tasks.tasks.insert({
     tasklist: taskListId,
     ...params,
