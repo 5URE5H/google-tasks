@@ -1,31 +1,19 @@
-import { gapi, loadAuth2 } from "gapi-script";
+import { gapi } from "gapi-script";
 import {
   createContext,
-  Dispatch,
   ReactNode,
   useContext,
   useEffect,
   useReducer,
 } from "react";
-import { USER_SIGNED_IN, USER_SIGNED_OUT } from "./types";
+import { USER_SIGNED_IN, USER_SIGNED_OUT } from "./constants";
 import Login from "../components/login/Login";
-import { CLIENT_ID, SCOPES } from "../config";
 import { authorize } from "../api";
-
-interface UserState {
-  isSignedIn: boolean;
-}
-
-interface UserAction {
-  type: string;
-  payload?: any;
-}
+import { UserAction, UserContextType, UserState } from "./types";
 
 const initialState = {
   isSignedIn: false,
 };
-
-type UserContextType = [UserState, Dispatch<UserAction>];
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 

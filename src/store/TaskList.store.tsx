@@ -1,27 +1,17 @@
 import {
   createContext,
-  Dispatch,
   ReactNode,
   useContext,
   useEffect,
   useReducer,
 } from "react";
 import { getTaskLists } from "../api";
-import { FETCH_TASKLIST } from "./types";
+import { FETCH_TASKLISTS, SELECT_TASKLIST } from "./constants";
+import { TaskListAction, TaskListContextType, TaskListState } from "./types";
 
-interface TaskListState {
-  items: any[];
-}
-
-interface TaskListAction {
-  type: string;
-  payload?: any;
-}
-
-type TaskListContextType = [TaskListState, Dispatch<TaskListAction>];
-
-const initialState = {
+const initialState: TaskListState = {
   items: [],
+  selected: undefined,
 };
 
 const TaskListContext = createContext<TaskListContextType | undefined>(
@@ -30,8 +20,10 @@ const TaskListContext = createContext<TaskListContextType | undefined>(
 
 const taskListReducer = (state: TaskListState, action: TaskListAction) => {
   switch (action.type) {
-    case FETCH_TASKLIST:
-      return { ...state, items: action.payload.items };
+    case FETCH_TASKLISTS:
+      return { ...state, items: action.payload };
+    case SELECT_TASKLIST:
+      return { ...state, selected: action.payload };
     default:
       return state;
   }
@@ -41,8 +33,8 @@ export const TaskListProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(taskListReducer, initialState);
 
   useEffect(() => {
-    getTaskLists().then((res) => {
-      dispatch({ type: FETCH_TASKLIST, payload: res });
+    getTaskLists().then((res: any) => {
+      dispatch({ type: FETCH_TASKLISTS, payload: res.items });
     });
   }, []);
 
@@ -57,7 +49,7 @@ export const useTaskList = () => {
   const context = useContext(TaskListContext);
 
   if (!context)
-    throw new Error("useUser should be used within <UserProvider />");
+    throw new Error("useTaskList should be used within <TaskListProvider />");
 
   return context;
 };
