@@ -7,8 +7,10 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
 import { useTask } from "../store/Task.store";
 import { useTaskList } from "../store/TaskList.store";
-import { getTasks } from "../api";
+import { addTask, getTasks } from "../api";
 import { FETCH_TASKS } from "../store/constants";
+import Button from "@mui/material/Button";
+import { AddTask } from "@mui/icons-material";
 
 export default function Tasks() {
   const [taskListState, taskListDispatch] = useTaskList();
@@ -24,9 +26,27 @@ export default function Tasks() {
     }
   }, [taskDispatch, taskListState]);
 
+  const handleAddTask = () => {
+    addTask({ taskListId: taskListState.selected?.id }).then(() => {
+      (async () => {
+        const response = (await getTasks(taskListState.selected?.id)) as any;
+        console.log(response);
+        taskDispatch({ type: FETCH_TASKS, payload: response.items });
+      })();
+    });
+  };
+
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
+      <Button
+        className="custom-button"
+        variant="text"
+        startIcon={<AddTask />}
+        onClick={handleAddTask}
+      >
+        Add a task
+      </Button>
       <FormControl>
         <RadioGroup
           aria-labelledby="demo-radio-buttons-group-label"

@@ -12,18 +12,32 @@ export interface TaskAction {
 }
 
 export interface Task {
-  etag: string;
-  id: string;
   kind: string;
-  links?: any[];
-  position: string;
-  selfLink: string;
-  status: string;
+  id: string;
+  etag: string;
   title: string;
   updated: string;
-  parent?: string;
-  notes?: string;
-  due?: string;
+  selfLink: string;
+  parent: string;
+  position: string;
+  notes: string;
+  status: TaskStatus;
+  due: string;
+  completed: string;
+  deleted: boolean;
+  hidden: boolean;
+  links: [
+    {
+      type: string;
+      description: string;
+      link: string;
+    }
+  ];
+}
+
+enum TaskStatus {
+  needsAction = "needsAction",
+  completed = "completed",
 }
 
 export type TaskContextType = [TaskState, Dispatch<TaskAction>];
@@ -31,12 +45,12 @@ export type TaskContextType = [TaskState, Dispatch<TaskAction>];
 ///////////////////////////////////// TaskList /////////////////////////////////////
 
 export interface TaskList {
-  etag: string;
-  id: string;
   kind: string;
-  selfLink: string;
+  id: string;
+  etag: string;
   title: string;
   updated: string;
+  selfLink: string;
 }
 
 export interface TaskListState {

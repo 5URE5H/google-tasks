@@ -1,3 +1,4 @@
+import { KeyboardEventHandler, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
@@ -10,20 +11,54 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { useTaskList } from "../store/TaskList.store";
 import { TaskList } from "../store/types";
-import { SELECT_TASKLIST } from "../store/constants";
-import { useEffect } from "react";
+import {
+  CREATE_TASKLIST,
+  FETCH_TASKLISTS,
+  SELECT_TASKLIST,
+} from "../store/constants";
+import TextField from "@mui/material/TextField";
+import { addTaskList, getTaskLists } from "../api";
+import TaskListItem from "./TaskListItem";
+import MenuItem from "@mui/material/MenuItem";
+import MenuList from "@mui/material/MenuList";
 
 const drawerWidth = 300;
 
 export default function TaskLists() {
+  const [text, setText] = useState("");
   const [state, dispatch] = useTaskList();
 
   useEffect(() => {
-    console.log(state);
-  }, [state]);
+    loadTaskLists();
+  }, []);
 
-  const onTaskListSelect = (tasklist: TaskList) => {
-    dispatch({ type: SELECT_TASKLIST, payload: tasklist });
+  const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
+    if (event.key === "Enter" && text) {
+      createTaskList();
+    }
+  };
+
+  const loadTaskLists = () => {
+    try {
+      getTaskLists().then((res: any) => {
+        dispatch({ type: FETCH_TASKLISTS, payload: res.items });
+      });
+    } catch (err) {
+      console.error("Failed to fetch tasklists!!", err);
+    }
+  };
+
+  const createTaskList = () => {
+    try {
+      addTaskList(text).then((res: any) => {
+        console.log(res);
+        loadTaskLists();
+      });
+    } catch (err) {
+      console.error("Failed to create tasklist!!", err);
+    } finally {
+      setText("");
+    }
   };
 
   return (
@@ -40,26 +75,32 @@ export default function TaskLists() {
     >
       <Toolbar />
       <Box sx={{ overflow: "auto" }}>
-        <List>
-          {state.items.map((tasklist, index) => (
-            <ListItem button key={tasklist.id}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={tasklist.title} />
-            </ListItem>
-          ))}
-        </List>
+        <Box
+          component="form"
+          sx={{
+            "& > :not(style)": { m: 1, width: "calc(100% - 16px)" },
+          }}
+          noValidate
+          autoComplete="off"
+          onSubmit={
+            ((event) =>
+              event.preventDefault()) as React.FormEventHandler<HTMLFormElement>
+          }
+        >
+          <TextField
+            id="filled-basic"
+            label="Create new list"
+            placeholder="Type and press enter"
+            variant="filled"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+        </Box>
         <Divider />
         <List>
           {state.items.map((tasklist) => (
-            <ListItem
-              button
-              key={tasklist.id}
-              onClick={() => onTaskListSelect(tasklist)}
-            >
-              <ListItemText primary={tasklist.title} />
-            </ListItem>
+            <TaskListItem key={tasklist.id} tasklist={tasklist} />
           ))}
         </List>
       </Box>

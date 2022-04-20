@@ -63,7 +63,7 @@ export const getTaskList = (taskListId: any) => {
   return makeRequest(request);
 };
 
-export const addTaskList = ({ title }: any) => {
+export const addTaskList = (title: any) => {
   const request = gapi.client.tasks.tasklists.insert({
     title,
   });

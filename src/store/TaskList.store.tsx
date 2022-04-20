@@ -1,11 +1,4 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useReducer,
-} from "react";
-import { getTaskLists } from "../api";
+import { createContext, ReactNode, useContext, useReducer } from "react";
 import { FETCH_TASKLISTS, SELECT_TASKLIST } from "./constants";
 import { TaskListAction, TaskListContextType, TaskListState } from "./types";
 
@@ -31,12 +24,6 @@ const taskListReducer = (state: TaskListState, action: TaskListAction) => {
 
 export const TaskListProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(taskListReducer, initialState);
-
-  useEffect(() => {
-    getTaskLists().then((res: any) => {
-      dispatch({ type: FETCH_TASKLISTS, payload: res.items });
-    });
-  }, []);
 
   return (
     <TaskListContext.Provider value={[state, dispatch]}>

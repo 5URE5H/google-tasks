@@ -1,0 +1,8 @@
+.custom-button {
+  text-transform: initial !important;
+  display: flex !important;
+  width: 100%;
+  border-radius: 50px !important;
+  justify-content: flex-start !important;
+  padding-left: 1rem !important;
+}
