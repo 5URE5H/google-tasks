@@ -1,5 +1,10 @@
 import { createContext, ReactNode, useContext, useReducer } from "react";
-import { FETCH_TASKS } from "./constants";
+import {
+  CREATE_TASK,
+  DELETE_TASK,
+  FETCH_TASKS,
+  UPDATE_TASK,
+} from "./constants";
 import { TaskAction, TaskContextType, TaskState } from "./types";
 
 const initialState: TaskState = {
@@ -12,6 +17,20 @@ const taskReducer = (state: TaskState, action: TaskAction) => {
   switch (action.type) {
     case FETCH_TASKS:
       return { ...state, items: action.payload };
+    case CREATE_TASK:
+      return { ...state, items: [action.payload, ...state.items] };
+    case UPDATE_TASK:
+      return {
+        ...state,
+        items: state.items.map((task) =>
+          task.id === action.payload.id ? action.payload : task
+        ),
+      };
+    case DELETE_TASK:
+      return {
+        ...state,
+        items: state.items.filter((task) => task.id !== action.payload.id),
+      };
     default:
       return state;
   }

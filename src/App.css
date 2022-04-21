@@ -6,3 +6,13 @@
   justify-content: flex-start !important;
   padding-left: 1rem !important;
 }
+
+.custom-task {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+}
+
+.custom-task-textarea {
+  flex: 1;
+}

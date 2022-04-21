@@ -1,9 +1,8 @@
 import { gapi } from "gapi-script";
 import { CLIENT_ID, SCOPES } from "../config";
 
-export const authorize = (params: { immediate: any }) => {
+export const authorizeApi = (params: { immediate: any }) => {
   return new Promise<void>((resolve, reject) => {
-    //eslint-disable-next-line
     gapi.auth.authorize(
       {
         client_id: CLIENT_ID,
@@ -15,7 +14,6 @@ export const authorize = (params: { immediate: any }) => {
         if (authResult.error) {
           return reject(authResult.error);
         }
-        // eslint-disable-next-line
         return gapi.client.load("tasks", "v1", () =>
           gapi.client.load("plus", "v1", () => resolve())
         );
@@ -24,13 +22,11 @@ export const authorize = (params: { immediate: any }) => {
   });
 };
 
-export const logout = () => {
+export const logoutApi = () => {
   return new Promise<void>((resolve, reject) => {
-    //eslint-disable-next-line
     const token = gapi.auth.getToken();
 
     if (token) {
-      //eslint-disable-next-line
       const accessToken = gapi.auth.getToken().access_token;
 
       fetch(
@@ -40,7 +36,6 @@ export const logout = () => {
         }
       )
         .then((res) => {
-          //eslint-disable-next-line
           gapi.auth.signOut();
           resolve();
         })
@@ -49,13 +44,13 @@ export const logout = () => {
   });
 };
 
-export const getTaskLists = () => {
+export const getTaskListsApi = () => {
   const request = gapi.client.tasks.tasklists.list();
 
   return makeRequest(request);
 };
 
-export const getTaskList = (taskListId: any) => {
+export const getTaskListApi = (taskListId: any) => {
   const request = gapi.client.tasks.tasklists.get({
     tasklist: taskListId,
   });
@@ -63,7 +58,7 @@ export const getTaskList = (taskListId: any) => {
   return makeRequest(request);
 };
 
-export const addTaskList = (title: any) => {
+export const addTaskListApi = (title: any) => {
   const request = gapi.client.tasks.tasklists.insert({
     title,
   });
@@ -71,7 +66,7 @@ export const addTaskList = (title: any) => {
   return makeRequest(request);
 };
 
-export const updateTaskList = ({ taskListId, title }: any) => {
+export const updateTaskListApi = ({ taskListId, title }: any) => {
   const request = gapi.client.tasks.tasklists.update({
     tasklist: taskListId,
     id: taskListId,
@@ -81,7 +76,7 @@ export const updateTaskList = ({ taskListId, title }: any) => {
   return makeRequest(request);
 };
 
-export const deleteTaskList = ({ taskListId }: any) => {
+export const deleteTaskListApi = ({ taskListId }: any) => {
   const request = gapi.client.tasks.tasklists.delete({
     tasklist: taskListId,
   });
@@ -89,7 +84,7 @@ export const deleteTaskList = ({ taskListId }: any) => {
   return makeRequest(request);
 };
 
-export const getTasks = (taskListId: any) => {
+export const getTasksApi = (taskListId: any) => {
   const request = gapi.client.tasks.tasks.list({
     tasklist: taskListId,
   });
@@ -97,7 +92,7 @@ export const getTasks = (taskListId: any) => {
   return makeRequest(request);
 };
 
-export const addTask = ({ taskListId, ...params }: any) => {
+export const addTaskApi = ({ taskListId, ...params }: any) => {
   const request = gapi.client.tasks.tasks.insert({
     tasklist: taskListId,
     ...params,
@@ -106,7 +101,7 @@ export const addTask = ({ taskListId, ...params }: any) => {
   return makeRequest(request);
 };
 
-export const updateTask = ({ taskListId, taskId, ...params }: any) => {
+export const updateTaskApi = ({ taskListId, taskId, ...params }: any) => {
   const request = gapi.client.tasks.tasks.update({
     tasklist: taskListId,
     task: taskId,
@@ -117,7 +112,7 @@ export const updateTask = ({ taskListId, taskId, ...params }: any) => {
   return makeRequest(request);
 };
 
-export const deleteTask = ({ taskListId, taskId }: any) => {
+export const deleteTaskApi = ({ taskListId, taskId }: any) => {
   const request = gapi.client.tasks.tasks.delete({
     tasklist: taskListId,
     task: taskId,

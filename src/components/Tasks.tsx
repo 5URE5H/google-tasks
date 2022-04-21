@@ -7,10 +7,11 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
 import { useTask } from "../store/Task.store";
 import { useTaskList } from "../store/TaskList.store";
-import { addTask, getTasks } from "../api";
-import { FETCH_TASKS } from "../store/constants";
+import { addTaskApi, getTasksApi } from "../api";
+import { CREATE_TASK, FETCH_TASKS } from "../store/constants";
 import Button from "@mui/material/Button";
 import { AddTask } from "@mui/icons-material";
+import TaskItem from "./TaskItem";
 
 export default function Tasks() {
   const [taskListState, taskListDispatch] = useTaskList();
@@ -18,21 +19,21 @@ export default function Tasks() {
 
   useEffect(() => {
     if (taskListState.selected) {
-      (async () => {
-        const response = (await getTasks(taskListState.selected?.id)) as any;
-        console.log(response);
-        taskDispatch({ type: FETCH_TASKS, payload: response.items });
-      })();
+      getTasks();
     }
   }, [taskDispatch, taskListState]);
 
+  const getTasks = async () => {
+    const response = (await getTasksApi(taskListState.selected?.id)) as any;
+    console.log(response);
+    taskDispatch({ type: FETCH_TASKS, payload: response.items });
+  };
+
   const handleAddTask = () => {
-    addTask({ taskListId: taskListState.selected?.id }).then(() => {
-      (async () => {
-        const response = (await getTasks(taskListState.selected?.id)) as any;
-        console.log(response);
-        taskDispatch({ type: FETCH_TASKS, payload: response.items });
-      })();
+    addTaskApi({ taskListId: taskListState.selected?.id }).then((response) => {
+      console.log("handleAddTask", response);
+      taskDispatch({ type: CREATE_TASK, payload: response });
+      getTasks();
     });
   };
 
@@ -47,22 +48,16 @@ export default function Tasks() {
       >
         Add a task
       </Button>
-      <FormControl>
-        <RadioGroup
-          aria-labelledby="demo-radio-buttons-group-label"
-          defaultValue="female"
-          name="radio-buttons-group"
-        >
-          {taskState.items.map((task) => (
-            <FormControlLabel
+      <div>
+        {!!taskListState.selected &&
+          taskState.items.map((task) => (
+            <TaskItem
               key={task.id}
-              value={task}
-              control={<Radio />}
-              label={task.title}
+              task={task}
+              tasklist={taskListState.selected!}
             />
           ))}
-        </RadioGroup>
-      </FormControl>
+      </div>
     </Box>
   );
 }

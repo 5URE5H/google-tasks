@@ -4,23 +4,11 @@ import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { useTaskList } from "../store/TaskList.store";
-import { TaskList } from "../store/types";
-import {
-  CREATE_TASKLIST,
-  FETCH_TASKLISTS,
-  SELECT_TASKLIST,
-} from "../store/constants";
+import { FETCH_TASKLISTS, SELECT_TASKLIST } from "../store/constants";
 import TextField from "@mui/material/TextField";
-import { addTaskList, getTaskLists } from "../api";
+import { addTaskListApi, getTaskListsApi } from "../api";
 import TaskListItem from "./TaskListItem";
-import MenuItem from "@mui/material/MenuItem";
-import MenuList from "@mui/material/MenuList";
 
 const drawerWidth = 300;
 
@@ -40,8 +28,11 @@ export default function TaskLists() {
 
   const loadTaskLists = () => {
     try {
-      getTaskLists().then((res: any) => {
+      getTaskListsApi().then((res: any) => {
         dispatch({ type: FETCH_TASKLISTS, payload: res.items });
+        if (!state.selected) {
+          dispatch({ type: SELECT_TASKLIST, payload: state.items[0] });
+        }
       });
     } catch (err) {
       console.error("Failed to fetch tasklists!!", err);
@@ -50,7 +41,7 @@ export default function TaskLists() {
 
   const createTaskList = () => {
     try {
-      addTaskList(text).then((res: any) => {
+      addTaskListApi(text).then((res: any) => {
         console.log(res);
         loadTaskLists();
       });

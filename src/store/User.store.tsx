@@ -8,8 +8,9 @@ import {
 } from "react";
 import { USER_SIGNED_IN, USER_SIGNED_OUT } from "./constants";
 import Login from "../components/login/Login";
-import { authorize } from "../api";
+import { authorizeApi } from "../api";
 import { UserAction, UserContextType, UserState } from "./types";
+import { CLIENT_ID, SCOPES } from "../config";
 
 const initialState = {
   isSignedIn: false,
@@ -33,7 +34,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     gapi.load("client:auth2", () => {
-      authorize({ immediate: false }).then(() => {
+      authorizeApi({ immediate: true }).then(() => {
         const isUserSignedIn = gapi.auth2
           ?.getAuthInstance()
           .isSignedIn.get() as boolean;

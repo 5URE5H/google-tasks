@@ -1,15 +1,15 @@
-export const USER_SIGNED_IN = "user signed in";
-export const USER_SIGNED_OUT = "user signed out";
+export const USER_SIGNED_IN = "USER_SIGNED_IN";
+export const USER_SIGNED_OUT = "USER_SIGNED_OUT";
 
-export const FETCH_TASKLISTS = "fetch tasklists";
-export const FETCH_TASKLIST = "fetch tasklist";
-export const CREATE_TASKLIST = "create tasklist";
-export const UPDATE_TASKLIST = "update tasklist";
-export const DELETE_TASKLIST = "delete tasklist";
-export const SELECT_TASKLIST = "select tasklist";
+export const FETCH_TASKLISTS = "FETCH_TASKLISTS";
+export const FETCH_TASKLIST = "FETCH_TASKLIST";
+export const CREATE_TASKLIST = "CREATE_TASKLIST";
+export const UPDATE_TASKLIST = "UPDATE_TASKLIST";
+export const DELETE_TASKLIST = "DELETE_TASKLIST";
+export const SELECT_TASKLIST = "SELECT_TASKLIST";
 
-export const FETCH_TASKS = "fetch tasks";
-export const FETCH_TASK = "fetch task";
-export const CREATE_TASK = "create task";
-export const UPDATE_TASK = "update task";
-export const DELETE_TASK = "delete task";
+export const FETCH_TASKS = "FETCH_TASKS";
+export const FETCH_TASK = "FETCH_TASK";
+export const CREATE_TASK = "CREATE_TASK";
+export const UPDATE_TASK = "UPDATE_TASK";
+export const DELETE_TASK = "DELETE_TASK";

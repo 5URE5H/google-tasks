@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import { GoogleLogin } from "react-google-login";
-import { CLIENT_ID } from "../../config";
+import { CLIENT_ID, SCOPES } from "../../config";
 
 interface LoginProps {}
 
@@ -21,6 +21,7 @@ const Login: FunctionComponent<LoginProps> = () => {
         onSuccess={onSuccess}
         onFailure={onFailure}
         cookiePolicy={"single_host_origin"}
+        scope={SCOPES[0]}
         isSignedIn={true}
       ></GoogleLogin>
     </div>
