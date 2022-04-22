@@ -5,14 +5,28 @@
   border-radius: 50px !important;
   justify-content: flex-start !important;
   padding-left: 1rem !important;
+  margin: 0 .25rem .25rem !important;
 }
 
 .custom-task {
   display: flex !important;
   flex-direction: row !important;
-  align-items: center;
+  align-items: flex-start;
+  width: 100% !important;
 }
 
 .custom-task-textarea {
   flex: 1;
+  margin-top: .25rem;
 }
+
+.custom-task-container {
+  padding: 0 1rem;
+}
+
+.custom-task-container:hover,
+.custom-task-container:focus {
+  text-decoration: none;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+

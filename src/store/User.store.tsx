@@ -7,13 +7,14 @@ import {
   useReducer,
 } from "react";
 import { USER_SIGNED_IN, USER_SIGNED_OUT } from "./constants";
-import Login from "../components/login/Login";
 import { authorizeApi } from "../api";
 import { UserAction, UserContextType, UserState } from "./types";
-import { CLIENT_ID, SCOPES } from "../config";
+import Login from "../components/login/login";
 
 const initialState = {
   isSignedIn: false,
+  isLoading: false,
+  userInfo: undefined
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);

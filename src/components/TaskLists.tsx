@@ -31,7 +31,7 @@ export default function TaskLists() {
       getTaskListsApi().then((res: any) => {
         dispatch({ type: FETCH_TASKLISTS, payload: res.items });
         if (!state.selected) {
-          dispatch({ type: SELECT_TASKLIST, payload: state.items[0] });
+          dispatch({ type: SELECT_TASKLIST, payload: res.items[0] });
         }
       });
     } catch (err) {

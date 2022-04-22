@@ -1,10 +1,6 @@
 import { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControl from "@mui/material/FormControl";
 import { useTask } from "../store/Task.store";
 import { useTaskList } from "../store/TaskList.store";
 import { addTaskApi, getTasksApi } from "../api";
@@ -18,27 +14,27 @@ export default function Tasks() {
   const [taskState, taskDispatch] = useTask();
 
   useEffect(() => {
-    if (taskListState.selected) {
+    const getTasks = async () => {
+      const response = (await getTasksApi(taskListState.selected?.id!)) as any;
+      console.log("Tasks", response.items)
+      taskDispatch({ type: FETCH_TASKS, payload: response.items });
+    };
+
+    if(taskListState.selected?.id) {
       getTasks();
     }
-  }, [taskDispatch, taskListState]);
+  }, [taskDispatch, taskListState.selected?.id]);
 
-  const getTasks = async () => {
-    const response = (await getTasksApi(taskListState.selected?.id)) as any;
-    console.log(response);
-    taskDispatch({ type: FETCH_TASKS, payload: response.items });
-  };
+
 
   const handleAddTask = () => {
     addTaskApi({ taskListId: taskListState.selected?.id }).then((response) => {
-      console.log("handleAddTask", response);
       taskDispatch({ type: CREATE_TASK, payload: response });
-      getTasks();
     });
   };
 
   return (
-    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+    <Box component="main" sx={{ flexGrow: 1, mt: 3 }}>
       <Toolbar />
       <Button
         className="custom-button"

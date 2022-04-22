@@ -1,5 +1,6 @@
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import Input from "@mui/material/Input";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Radio from "@mui/material/Radio";
@@ -23,63 +24,80 @@ export default function TaskItem({
   const [notes, setNotes] = useState(task.notes);
 
   useEffect(() => {
-    console.log(state);
-  }, [state]);
+    console.log(state)
+  }, [state])
 
-  const updateTask = () => {
-    updateTaskApi({
-      taskListId: tasklist.id,
-      taskId: task.id,
-      title,
-      notes,
-    }).then((response) => {
-      dispatch({ type: UPDATE_TASK, payload: response });
-      const getTasks = async () => {
-        const response = (await getTasksApi(tasklist.id)) as any;
-        console.log(response);
-        dispatch({ type: FETCH_TASKS, payload: response.items });
-      };
+  // useEffect(() => {
+  //   const updateTask = () => {
+  //     console.log("updated called")
+  //     updateTaskApi({
+  //       taskListId: tasklist.id,
+  //       taskId: task.id,
+  //       title,
+  //       notes,
+  //     }).then((response) => {
+  //       console.log(response)
+  //       dispatch({ type: UPDATE_TASK, payload: response });
+  //     });
+  //   };
 
-      getTasks();
-    });
-  };
+  //   updateTask();
+  // }, [title, notes, tasklist.id, task.id, dispatch]);
 
   const handleTitleChange = (value: string) => {
     setTitle(value);
-    updateTask();
+    updateTaskApi({
+      taskListId: tasklist.id,
+      taskId: task.id,
+      title: value,
+      notes,
+    }).then((response) => {
+      console.log(response);
+      dispatch({ type: UPDATE_TASK, payload: response });
+    });
   };
 
   const handleNotesChange = (value: string) => {
     setNotes(value);
-    updateTask();
+    updateTaskApi({
+      taskListId: tasklist.id,
+      taskId: task.id,
+      title,
+      notes: value,
+    }).then((response) => {
+      console.log(response);
+      dispatch({ type: UPDATE_TASK, payload: response });
+    });
   };
 
   return (
-    <div>
-      <FormControl className="custom-task" fullWidth sx={{ m: 1 }}>
+    <div className="custom-task-container">
+      <div className="custom-task">
         <FormControlLabel value="other" control={<Radio />} label="" />
         <div className="custom-task-textarea">
-          <TextField
+          <Input
             fullWidth
             id="standard-multiline-static"
             multiline
             rows={1}
-            variant="standard"
+            disableUnderline
             value={title}
             onChange={(e) => handleTitleChange(e.target.value)}
           />
-          <TextField
-            fullWidth
-            id="standard-multiline-static"
-            multiline
-            rows={1}
-            variant="standard"
-            value={notes}
-            onChange={(e) => handleNotesChange(e.target.value)}
-            size="small"
-          />
+          {notes && (
+            <Input
+              fullWidth
+              id="standard-multiline-static"
+              multiline
+              rows={1}
+              disableUnderline
+              value={notes}
+              onChange={(e) => handleNotesChange(e.target.value)}
+              size="small"
+            />
+          )}
         </div>
-      </FormControl>
+      </div>
     </div>
   );
 }

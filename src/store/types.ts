@@ -69,6 +69,8 @@ export type TaskListContextType = [TaskListState, Dispatch<TaskListAction>];
 
 export interface UserState {
   isSignedIn: boolean;
+  isLoading: boolean;
+  userInfo: any;
 }
 
 export interface UserAction {
