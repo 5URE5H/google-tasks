@@ -6,11 +6,17 @@ import {
   SELECT_TASKLIST,
   UPDATE_TASKLIST,
 } from "./constants";
-import { TaskListAction, TaskListContextType, TaskListState } from "./types";
+import {
+  TaskListAction,
+  TaskListContextType,
+  TaskListState,
+  TasksSortBy,
+} from "./types";
 
 const initialState: TaskListState = {
   items: [],
   selected: undefined,
+  sortBy: TasksSortBy.myorder,
 };
 
 const TaskListContext = createContext<TaskListContextType | undefined>(

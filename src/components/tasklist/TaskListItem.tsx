@@ -1,8 +1,8 @@
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import { useTaskList } from "../store/TaskList.store";
-import { TaskList } from "../store/types";
-import { SELECT_TASKLIST } from "../store/constants";
+import { useTaskList } from "../../store/TaskList.store";
+import { TaskList } from "../../store/types";
+import { SELECT_TASKLIST } from "../../store/constants";
 
 export default function TaskListItem({ tasklist }: { tasklist: TaskList }) {
   const [state, dispatch] = useTaskList();
@@ -17,9 +17,7 @@ export default function TaskListItem({ tasklist }: { tasklist: TaskList }) {
       className={state.selected?.id === tasklist.id ? "active" : ""}
       onClick={() => onTaskListSelect(tasklist)}
     >
-      <ListItemText
-        primary={tasklist.title}
-      />
+      <ListItemText primary={tasklist.title} />
     </ListItem>
   );
 }

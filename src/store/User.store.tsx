@@ -9,12 +9,12 @@ import {
 import { USER_SIGNED_IN, USER_SIGNED_OUT } from "./constants";
 import { authorizeApi } from "../api";
 import { UserAction, UserContextType, UserState } from "./types";
-import Login from "../components/login/login";
+import Login from "../components/auth/Login";
 
 const initialState = {
   isSignedIn: false,
   isLoading: false,
-  userInfo: undefined
+  userInfo: undefined,
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);

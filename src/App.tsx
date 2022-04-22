@@ -1,14 +1,15 @@
-import "./App.css";
-import { UserProvider } from "./store/User.store";
 import { useEffect } from "react";
+
 import Box from "@mui/material/Box";
-import { TaskProvider } from "./store/Task.store";
-import Tasks from "./components/Tasks";
-import { TaskListProvider } from "./store/TaskList.store";
-import TaskLists from "./components/TaskLists";
-import TaskHeader from "./components/TaskHeader";
 import CssBaseline from "@mui/material/CssBaseline";
-import Container from "@mui/material/Container";
+
+import { UserProvider } from "./store/User.store";
+import { TaskProvider } from "./store/Task.store";
+import Tasks from "./components/task/Tasks";
+import { TaskListProvider } from "./store/TaskList.store";
+import TaskLists from "./components/tasklist/TaskLists";
+import TaskHeader from "./components/TaskHeader";
+import "./App.css";
 
 function App() {
   useEffect(() => {}, []);

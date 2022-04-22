@@ -8,27 +8,23 @@ import MenuList from "@mui/material/MenuList";
 import Divider from "@mui/material/Divider";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import { Check } from "@mui/icons-material";
-import Paper from "@mui/material/Paper";
 import { useState } from "react";
+import { useTaskList } from "../../store/TaskList.store";
+import { Task, TaskList } from "../../store/types";
+import { deleteTaskApi } from "../../api";
+import { DELETE_TASK } from "../../store/constants";
+import { useTask } from "../../store/Task.store";
 
-const options = [
-  "None",
-  "Atria",
-  "Callisto",
-  "Dione",
-  "Ganymede",
-  "Hangouts Call",
-  "Luna",
-  "Oberon",
-  "Phobos",
-  "Pyxis",
-  "Sedna",
-  "Titania",
-  "Triton",
-  "Umbriel",
-];
+export default function TaskMenu({
+  task,
+  tasklist,
+}: {
+  task: Task;
+  tasklist: TaskList;
+}) {
+  const [tasklistState, tasklistDispatch] = useTaskList();
+  const [taskState, taskDispatch] = useTask();
 
-export default function TaskMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -38,6 +34,13 @@ export default function TaskMenu() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleDelete = () => {
+    console.log(task, tasklist);
+    deleteTaskApi({ taskListId: tasklist.id, taskId: task.id }).then(() => {
+      taskDispatch({ type: DELETE_TASK, payload: task });
+    });
   };
 
   return (
@@ -66,35 +69,26 @@ export default function TaskMenu() {
             <ListItemText onClick={handleClose}>Add sub task</ListItemText>
           </MenuItem>
           <MenuItem color="error">
-            <ListItemText onClick={handleClose}>Delete</ListItemText>
+            <ListItemText onClick={handleDelete}>Delete</ListItemText>
           </MenuItem>
           <Divider />
-          <MenuItem>
-            <ListItemText inset>Single</ListItemText>
-          </MenuItem>
-          <MenuItem>
-            <ListItemText inset>1.15</ListItemText>
-          </MenuItem>
-          <MenuItem>
-            <ListItemText inset>Double</ListItemText>
-          </MenuItem>
-          <MenuItem>
-            <ListItemIcon>
-              <Check />
-            </ListItemIcon>
-            Custom: 1.2
-          </MenuItem>
-          <Divider />
-          <MenuItem>
-            <ListItemText>Add space before paragraph</ListItemText>
-          </MenuItem>
-          <MenuItem>
-            <ListItemText>Add space after paragraph</ListItemText>
-          </MenuItem>
-          <Divider />
-          <MenuItem>
-            <ListItemText>Custom spacing...</ListItemText>
-          </MenuItem>
+          {tasklistState.items.map((tasklist) => {
+            if (tasklist.id === tasklistState.selected?.id!) {
+              return (
+                <MenuItem>
+                  <ListItemIcon>
+                    <Check />
+                  </ListItemIcon>
+                  {tasklist.title}
+                </MenuItem>
+              );
+            }
+            return (
+              <MenuItem>
+                <ListItemText inset>{tasklist.title}</ListItemText>
+              </MenuItem>
+            );
+          })}
         </MenuList>
       </Menu>
     </div>

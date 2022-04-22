@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import { useTask } from "../store/Task.store";
-import { useTaskList } from "../store/TaskList.store";
-import { addTaskApi, getTasksApi } from "../api";
-import { CREATE_TASK, FETCH_TASKS } from "../store/constants";
+import { useTask } from "../../store/Task.store";
+import { useTaskList } from "../../store/TaskList.store";
+import { addTaskApi, getTasksApi } from "../../api";
+import { CREATE_TASK, FETCH_TASKS } from "../../store/constants";
 import Button from "@mui/material/Button";
 import { AddTask } from "@mui/icons-material";
 import TaskItem from "./TaskItem";
-import TaskListMenu from "./TaskListMenu";
+import TaskListMenu from "../tasklist/TaskListMenu";
 
 export default function Tasks() {
   const [taskListState, taskListDispatch] = useTaskList();

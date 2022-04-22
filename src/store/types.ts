@@ -56,11 +56,17 @@ export interface TaskList {
 export interface TaskListState {
   items: TaskList[];
   selected?: TaskList | undefined;
+  sortBy: TasksSortBy;
 }
 
 export interface TaskListAction {
   type: string;
   payload?: any;
+}
+
+export enum TasksSortBy {
+  myorder = "myorder",
+  date = "date",
 }
 
 export type TaskListContextType = [TaskListState, Dispatch<TaskListAction>];

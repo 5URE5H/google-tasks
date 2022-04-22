@@ -1,15 +1,12 @@
-import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Input from "@mui/material/Input";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
 import Radio from "@mui/material/Radio";
-import TextField from "@mui/material/TextField";
 import { useEffect, useState } from "react";
-import { getTasksApi, updateTaskApi } from "../api";
-import { FETCH_TASKS, UPDATE_TASK } from "../store/constants";
-import { useTask } from "../store/Task.store";
-import { Task, TaskList } from "../store/types";
+import { updateTaskApi } from "../../api";
+import { useDebounce } from "../../hooks/useDebounce";
+import { UPDATE_TASK } from "../../store/constants";
+import { useTask } from "../../store/Task.store";
+import { Task, TaskList } from "../../store/types";
 import TaskMenu from "./TaskMenu";
 
 export default function TaskItem({
@@ -19,31 +16,34 @@ export default function TaskItem({
   task: Task;
   tasklist: TaskList;
 }) {
-  const [state, dispatch] = useTask();
+  const [taskState, taskDispatch] = useTask();
 
   const [title, setTitle] = useState(task.title);
   const [notes, setNotes] = useState(task.notes);
 
+  const titleDebounce = useDebounce(title, 1000);
+  const notesDebounce = useDebounce(notes, 1000);
+
   useEffect(() => {
-    console.log(state)
-  }, [state])
+    console.log(taskState);
+  }, [taskState]);
 
   useEffect(() => {
     const updateTask = () => {
-      console.log("updated called")
+      console.log("updated called");
       updateTaskApi({
         taskListId: tasklist.id,
         taskId: task.id,
-        title,
-        notes,
+        title: titleDebounce,
+        notes: notesDebounce,
       }).then((response) => {
-        console.log(response)
-        dispatch({ type: UPDATE_TASK, payload: response });
+        console.log(response);
+        taskDispatch({ type: UPDATE_TASK, payload: response });
       });
     };
 
     updateTask();
-  }, [title, notes, tasklist.id, task.id, dispatch]);
+  }, [titleDebounce, notesDebounce, tasklist.id, task.id, taskDispatch]);
 
   const handleTitleChange = (value: string) => {
     setTitle(value);
@@ -81,7 +81,7 @@ export default function TaskItem({
             />
           )}
         </div>
-        <TaskMenu />
+        <TaskMenu task={task} tasklist={tasklist} />
       </div>
     </div>
   );
