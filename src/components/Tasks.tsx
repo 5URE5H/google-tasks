@@ -8,6 +8,7 @@ import { CREATE_TASK, FETCH_TASKS } from "../store/constants";
 import Button from "@mui/material/Button";
 import { AddTask } from "@mui/icons-material";
 import TaskItem from "./TaskItem";
+import TaskListMenu from "./TaskListMenu";
 
 export default function Tasks() {
   const [taskListState, taskListDispatch] = useTaskList();
@@ -16,16 +17,14 @@ export default function Tasks() {
   useEffect(() => {
     const getTasks = async () => {
       const response = (await getTasksApi(taskListState.selected?.id!)) as any;
-      console.log("Tasks", response.items)
+      console.log("Tasks", response.items);
       taskDispatch({ type: FETCH_TASKS, payload: response.items });
     };
 
-    if(taskListState.selected?.id) {
+    if (taskListState.selected?.id) {
       getTasks();
     }
   }, [taskDispatch, taskListState.selected?.id]);
-
-
 
   const handleAddTask = () => {
     addTaskApi({ taskListId: taskListState.selected?.id }).then((response) => {
@@ -36,14 +35,17 @@ export default function Tasks() {
   return (
     <Box component="main" sx={{ flexGrow: 1, mt: 3 }}>
       <Toolbar />
-      <Button
-        className="custom-button"
-        variant="text"
-        startIcon={<AddTask />}
-        onClick={handleAddTask}
-      >
-        Add a task
-      </Button>
+      <div className="custom-button-container">
+        <Button
+          className="custom-button"
+          variant="text"
+          startIcon={<AddTask />}
+          onClick={handleAddTask}
+        >
+          Add a task
+        </Button>
+        <TaskListMenu />
+      </div>
       <div>
         {!!taskListState.selected &&
           taskState.items.map((task) => (

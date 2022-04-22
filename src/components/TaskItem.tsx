@@ -10,6 +10,7 @@ import { getTasksApi, updateTaskApi } from "../api";
 import { FETCH_TASKS, UPDATE_TASK } from "../store/constants";
 import { useTask } from "../store/Task.store";
 import { Task, TaskList } from "../store/types";
+import TaskMenu from "./TaskMenu";
 
 export default function TaskItem({
   task,
@@ -27,47 +28,29 @@ export default function TaskItem({
     console.log(state)
   }, [state])
 
-  // useEffect(() => {
-  //   const updateTask = () => {
-  //     console.log("updated called")
-  //     updateTaskApi({
-  //       taskListId: tasklist.id,
-  //       taskId: task.id,
-  //       title,
-  //       notes,
-  //     }).then((response) => {
-  //       console.log(response)
-  //       dispatch({ type: UPDATE_TASK, payload: response });
-  //     });
-  //   };
+  useEffect(() => {
+    const updateTask = () => {
+      console.log("updated called")
+      updateTaskApi({
+        taskListId: tasklist.id,
+        taskId: task.id,
+        title,
+        notes,
+      }).then((response) => {
+        console.log(response)
+        dispatch({ type: UPDATE_TASK, payload: response });
+      });
+    };
 
-  //   updateTask();
-  // }, [title, notes, tasklist.id, task.id, dispatch]);
+    updateTask();
+  }, [title, notes, tasklist.id, task.id, dispatch]);
 
   const handleTitleChange = (value: string) => {
     setTitle(value);
-    updateTaskApi({
-      taskListId: tasklist.id,
-      taskId: task.id,
-      title: value,
-      notes,
-    }).then((response) => {
-      console.log(response);
-      dispatch({ type: UPDATE_TASK, payload: response });
-    });
   };
 
   const handleNotesChange = (value: string) => {
     setNotes(value);
-    updateTaskApi({
-      taskListId: tasklist.id,
-      taskId: task.id,
-      title,
-      notes: value,
-    }).then((response) => {
-      console.log(response);
-      dispatch({ type: UPDATE_TASK, payload: response });
-    });
   };
 
   return (
@@ -94,9 +77,11 @@ export default function TaskItem({
               value={notes}
               onChange={(e) => handleNotesChange(e.target.value)}
               size="small"
+              placeholder="Details"
             />
           )}
         </div>
+        <TaskMenu />
       </div>
     </div>
   );

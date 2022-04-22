@@ -84,26 +84,27 @@ export const deleteTaskListApi = ({ taskListId }: any) => {
   return makeRequest(request);
 };
 
-// export const getTasksApi = (taskListId: any) => {
-//   const request = gapi.client.tasks.tasks.list({
-//     tasklist: taskListId,
-//   });
+export const getTasksApi = (taskListId: any) => {
+  const request = gapi.client.tasks.tasks.list({
+    tasklist: taskListId,
+  });
 
-//   return makeRequest(request);
-// };
-
-export const getTasksApi = (taskListId: string) => {
-  return fetch(
-    `https://tasks.googleapis.com/tasks/v1/lists/${taskListId}/tasks`,
-    {
-      method: "get",
-      headers: new Headers({
-        Authorization:
-          "Bearer ya29.A0ARrdaM9B7hGl3XTxZOL0lu8rDC-nsFx5lQeqQVVyZmJSe8L9cXWQKQcDqWUn_TKzxM-UMYNgSCnpOMTtamyNok0W9i3hKTh6EdhEYFivHS1RM_LflABcLVg1vH4sd4rLC8sviiv0YtkvMipi6fjEhGAfS1aA0rGOWv8-aEcJ"
-      }),
-    }
-  ).then((res) => res.json());
+  return makeRequest(request);
 };
+
+// export const getTasksApi = (taskListId: string) => {
+//   return fetch(
+//     `https://tasks.googleapis.com/tasks/v1/lists/${taskListId}/tasks`,
+//     {
+//       method: "get",
+//       headers: new Headers({
+//         Authorization:
+//           "Bearer ya29.A0ARrdaM9B7hGl3XTxZOL0lu8rDC-nsFx5lQeqQVVyZmJSe8L9cXWQKQcDqWUn_TKzxM-UMYNgSCnpOMTtamyNok0W9i3hKTh6EdhEYFivHS1RM_LflABcLVg1vH4sd4rLC8sviiv0YtkvMipi6fjEhGAfS1aA0rGOWv8-aEcJ",
+//         "Cache-Control": "no-cache" 
+//       }),
+//     }
+//   ).then((res) => res.json());
+// };
 
 export const addTaskApi = ({ taskListId, ...params }: any) => {
   const request = gapi.client.tasks.tasks.insert({

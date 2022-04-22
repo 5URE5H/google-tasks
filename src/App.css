@@ -1,3 +1,10 @@
+
+
+.custom-button-container {
+  display: flex;
+  margin: 0 1rem 1rem 1rem;
+}
+
 .custom-button {
   text-transform: initial !important;
   display: flex !important;
@@ -5,7 +12,6 @@
   border-radius: 50px !important;
   justify-content: flex-start !important;
   padding-left: 1rem !important;
-  margin: 0 .25rem .25rem !important;
 }
 
 .custom-task {
@@ -21,12 +27,20 @@
 }
 
 .custom-task-container {
-  padding: 0 1rem;
+  padding: 0 1rem 0 2rem;
 }
 
 .custom-task-container:hover,
 .custom-task-container:focus {
   text-decoration: none;
   background-color: rgba(0, 0, 0, 0.04);
+}
+
+.MuiListItem-button.active {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.MuiListItem-button.active .MuiTypography-root {
+  font-weight: 600 !important;
 }
 
