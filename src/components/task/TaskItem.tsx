@@ -134,7 +134,7 @@ export default function TaskItem({
             <TextareaAutosize
               ref={ref}
               minRows={1}
-              placeholder={isFocused ? "Title" : ""}
+              placeholder={isFocused || isNotesFocused ? "Title" : ""}
               defaultValue={title}
               onChange={(e) => handleTitleChange(e.target.value)}
               style={{

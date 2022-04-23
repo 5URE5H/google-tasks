@@ -8,17 +8,15 @@ import { useTaskList } from "../../store/TaskList.store";
 import { FETCH_TASKLISTS, SELECT_TASKLIST } from "../../store/constants";
 import TextField from "@mui/material/TextField";
 import { addTaskListApi, getTaskListsApi } from "../../api";
-import TaskListItem from "./TaskListItem";
+import TaskListItem from "../tasklist/TaskListItem";
 
-const drawerWidth = "15vw";
+const drawerWidth = "35vw";
 
-export default function TaskLists() {
+export default function TaskInfo() {
   const [text, setText] = useState("");
   const [state, dispatch] = useTaskList();
 
-  useEffect(() => {
-    loadTaskLists();
-  }, []);
+  useEffect(() => {}, []);
 
   const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.key === "Enter" && text) {
@@ -55,6 +53,7 @@ export default function TaskLists() {
   return (
     <Drawer
       variant="permanent"
+      anchor="right"
       sx={{
         width: drawerWidth,
         flexShrink: 0,

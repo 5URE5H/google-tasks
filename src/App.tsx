@@ -10,6 +10,8 @@ import { TaskListProvider } from "./store/TaskList.store";
 import TaskLists from "./components/tasklist/TaskLists";
 import TaskHeader from "./components/TaskHeader";
 import "./App.css";
+import Container from "@mui/material/Container";
+import TaskInfo from "./components/task/TaskInfo";
 
 function App() {
   useEffect(() => {}, []);
@@ -25,6 +27,7 @@ function App() {
             <TaskProvider>
               <Tasks />
             </TaskProvider>
+            <TaskInfo />
           </TaskListProvider>
         </Box>
       </UserProvider>

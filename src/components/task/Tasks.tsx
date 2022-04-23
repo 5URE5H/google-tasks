@@ -42,7 +42,7 @@ export default function Tasks({ parent }: { parent?: string }) {
   };
 
   return (
-    <Box component="main" sx={{ flexGrow: 1, mt: 3 }}>
+    <Box component="main" sx={{ mt: 2, width: "50vw" }}>
       <Toolbar />
       <div className="custom-button-container">
         <Button
