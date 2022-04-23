@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useContext, useReducer } from "react";
 import {
+  CREATE_SUB_TASK,
   CREATE_TASK,
   DELETE_TASK,
   FETCH_ALL_TASKS,
@@ -39,17 +40,22 @@ const taskReducer = (state: TaskState, action: TaskAction) => {
       };
     case CREATE_TASK:
       return { ...state, items: [action.payload, ...state.items] };
+    case CREATE_SUB_TASK:
+      return { ...state, allItems: [action.payload, ...state.allItems] };
     case UPDATE_TASK:
       return {
         ...state,
         items: state.items.map((task) =>
           task.id === action.payload.id ? action.payload : task
         ),
+        allItems: state.allItems.map((task) =>
+          task.id === action.payload.id ? action.payload : task
+        ),
       };
     case DELETE_TASK:
       return {
         ...state,
-        items: state.items.filter((task) => task.id !== action.payload.id),
+        items: state.allItems.filter((task) => task.id !== action.payload.id),
       };
     default:
       return state;

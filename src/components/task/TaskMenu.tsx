@@ -11,8 +11,12 @@ import { Check } from "@mui/icons-material";
 import { useState } from "react";
 import { useTaskList } from "../../store/TaskList.store";
 import { Task, TaskList } from "../../store/types";
-import { deleteTaskApi } from "../../api";
-import { DELETE_TASK } from "../../store/constants";
+import { addTaskApi, deleteTaskApi } from "../../api";
+import {
+  CREATE_SUB_TASK,
+  CREATE_TASK,
+  DELETE_TASK,
+} from "../../store/constants";
 import { useTask } from "../../store/Task.store";
 
 export default function TaskMenu({
@@ -37,10 +41,19 @@ export default function TaskMenu({
   };
 
   const handleDelete = () => {
-    console.log(task, tasklist);
     deleteTaskApi({ taskListId: tasklist.id, taskId: task.id }).then(() => {
       taskDispatch({ type: DELETE_TASK, payload: task });
     });
+    handleClose();
+  };
+
+  const handleAddSubTask = () => {
+    addTaskApi({ taskListId: tasklist.id, parent: task.id }).then(
+      (response) => {
+        taskDispatch({ type: CREATE_SUB_TASK, payload: response });
+      }
+    );
+    handleClose();
   };
 
   return (
@@ -66,7 +79,7 @@ export default function TaskMenu({
       >
         <MenuList dense>
           <MenuItem>
-            <ListItemText onClick={handleClose}>Add sub task</ListItemText>
+            <ListItemText onClick={handleAddSubTask}>Add sub task</ListItemText>
           </MenuItem>
           <MenuItem color="error">
             <ListItemText onClick={handleDelete}>Delete</ListItemText>

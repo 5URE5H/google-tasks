@@ -29,56 +29,37 @@ export default function TaskItem({
   const [title, setTitle] = useState(task.title);
   const [notes, setNotes] = useState(task.notes);
   const [status, setStatus] = useState(task.status);
-  const [shouldUpdate, setShouldUpdate] = useState(false);
 
   const titleDebounce = useDebounce(title, 1000);
   const notesDebounce = useDebounce(notes, 1000);
 
-  useEffect(() => {
-    const updateTask = () => {
-      console.log("updated called");
-      updateTaskApi({
-        taskListId: tasklist.id,
-        taskId: task.id,
-        title: titleDebounce,
-        notes: notesDebounce,
-        status: status,
-      }).then((response) => {
-        console.log(response);
-        taskDispatch({ type: UPDATE_TASK, payload: response });
-      });
-    };
-
-    if (shouldUpdate) {
-      updateTask();
-    }
-
-    return () => {
-      setShouldUpdate(false);
-    };
-  }, [
-    titleDebounce,
-    notesDebounce,
-    status,
-    tasklist.id,
-    task.id,
-    taskDispatch,
-    shouldUpdate,
-  ]);
+  const updateTask = () => {
+    console.log("updated called");
+    updateTaskApi({
+      taskListId: tasklist.id,
+      taskId: task.id,
+      title: titleDebounce,
+      notes: notesDebounce,
+      status: status,
+    }).then((response) => {
+      console.log(response);
+      taskDispatch({ type: UPDATE_TASK, payload: response });
+    });
+  };
 
   const handleTitleChange = (value: string) => {
     setTitle(value);
-    setShouldUpdate(true);
+    updateTask();
   };
 
   const handleNotesChange = (value: string) => {
     setNotes(value);
-    setShouldUpdate(true);
+    updateTask();
   };
 
   const handleStatusChange = () => {
     setStatus(TaskStatus.completed);
-    setShouldUpdate(true);
+    updateTask();
   };
 
   return (
