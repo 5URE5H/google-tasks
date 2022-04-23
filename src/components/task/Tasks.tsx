@@ -4,22 +4,30 @@ import Toolbar from "@mui/material/Toolbar";
 import { useTask } from "../../store/Task.store";
 import { useTaskList } from "../../store/TaskList.store";
 import { addTaskApi, getTasksApi } from "../../api";
-import { CREATE_TASK, FETCH_TASKS } from "../../store/constants";
+import {
+  CREATE_TASK,
+  FETCH_ALL_TASKS,
+  FETCH_TASKS,
+} from "../../store/constants";
 import Button from "@mui/material/Button";
 import { AddTask } from "@mui/icons-material";
 import TaskItem from "./TaskItem";
 import TaskListMenu from "../tasklist/TaskListMenu";
 import TaskDrawer from "./TaskDrawer";
+import { Task, TaskStatus } from "../../store/types";
 
-export default function Tasks() {
+export default function Tasks({ parent }: { parent?: string }) {
   const [taskListState, taskListDispatch] = useTaskList();
   const [taskState, taskDispatch] = useTask();
 
   useEffect(() => {
     const getTasks = async () => {
       const response = (await getTasksApi(taskListState.selected?.id!)) as any;
-      console.log("Tasks", response.items);
-      taskDispatch({ type: FETCH_TASKS, payload: response.items });
+      const filteredTasks: Task[] = response.items.filter(
+        (task: Task) => task.status === TaskStatus.needsAction && !task.parent
+      );
+      taskDispatch({ type: FETCH_ALL_TASKS, payload: response.items });
+      taskDispatch({ type: FETCH_TASKS, payload: undefined });
     };
 
     if (taskListState.selected?.id) {
@@ -57,7 +65,6 @@ export default function Tasks() {
             />
           ))}
       </div>
-      <TaskDrawer />
     </Box>
   );
 }

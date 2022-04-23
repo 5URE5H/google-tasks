@@ -60,3 +60,7 @@
 .MuiListItem-button.active .MuiTypography-root {
   font-weight: 600 !important;
 }
+
+.custom-child-tasks .custom-task-container {
+  padding-left: 4rem;
+}

@@ -3,7 +3,9 @@ import { Dispatch } from "react";
 ///////////////////////////////////// Task /////////////////////////////////////
 
 export interface TaskState {
+  allItems: Task[];
   items: Task[];
+  children: Task[];
 }
 
 export interface TaskAction {

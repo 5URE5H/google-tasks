@@ -12,6 +12,8 @@ import EventIcon from "@mui/icons-material/Event";
 import TaskMenu from "./TaskMenu";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { useFocus } from "../../hooks/useFocus";
+import Tasks from "./Tasks";
+import TaskChildren from "./TaskChildren";
 
 export default function TaskItem({
   task,
@@ -27,13 +29,10 @@ export default function TaskItem({
   const [title, setTitle] = useState(task.title);
   const [notes, setNotes] = useState(task.notes);
   const [status, setStatus] = useState(task.status);
+  const [shouldUpdate, setShouldUpdate] = useState(false);
 
   const titleDebounce = useDebounce(title, 1000);
   const notesDebounce = useDebounce(notes, 1000);
-
-  useEffect(() => {
-    console.log(taskState);
-  }, [taskState]);
 
   useEffect(() => {
     const updateTask = () => {
@@ -50,7 +49,13 @@ export default function TaskItem({
       });
     };
 
-    updateTask();
+    if (shouldUpdate) {
+      updateTask();
+    }
+
+    return () => {
+      setShouldUpdate(false);
+    };
   }, [
     titleDebounce,
     notesDebounce,
@@ -58,83 +63,90 @@ export default function TaskItem({
     tasklist.id,
     task.id,
     taskDispatch,
+    shouldUpdate,
   ]);
 
   const handleTitleChange = (value: string) => {
     setTitle(value);
+    setShouldUpdate(true);
   };
 
   const handleNotesChange = (value: string) => {
     setNotes(value);
+    setShouldUpdate(true);
   };
 
   const handleStatusChange = () => {
     setStatus(TaskStatus.completed);
+    setShouldUpdate(true);
   };
 
-  console.log(isFocused, isNotesFocused);
-
   return (
-    <div
-      className={`custom-task-container ${
-        isFocused || isNotesFocused ? "custom-task-focused" : ""
-      }`}
-    >
-      <div className="custom-task">
-        <Radio
-          checked={status === "completed"}
-          onChange={handleStatusChange}
-          value={task}
-          name="radio-buttons"
-        />
-        <div className="custom-task-textarea">
-          <TextareaAutosize
-            ref={ref}
-            minRows={1}
-            placeholder="Title"
-            defaultValue={title}
-            onChange={(e) => handleTitleChange(e.target.value)}
-            style={{
-              width: "100%",
-              resize: "none",
-              border: "none",
-              outline: "none",
-              background: "inherit",
-              overflow: "hidden",
-              fontSize: "16px",
-              fontFamily: "inherit",
-              color: "inherit",
-              lineHeight: "1",
-            }}
+    <div>
+      <div
+        className={`custom-task-container ${
+          isFocused || isNotesFocused ? "custom-task-focused" : ""
+        }`}
+      >
+        <div className="custom-task">
+          <Radio
+            checked={status === "completed"}
+            onChange={handleStatusChange}
+            value={task}
+            name="radio-buttons"
           />
-          {
-            <div className="custom-notes-container">
-              {isFocused && !notes && <NotesIcon />}
-              <TextareaAutosize
-                ref={notesRef}
-                minRows={1}
-                placeholder="Notes"
-                defaultValue={notes}
-                onChange={(e) => handleNotesChange(e.target.value)}
-                style={{
-                  width: "100%",
-                  resize: "none",
-                  border: "none",
-                  outline: "none",
-                  background: "inherit",
-                  overflow: "hidden",
-                  fontSize: "14px",
-                  fontFamily: "inherit",
-                  lineHeight: "1",
-                  visibility:
-                    isNotesFocused || isFocused || notes ? "visible" : "hidden",
-                }}
-              />
-            </div>
-          }
+          <div className="custom-task-textarea">
+            <TextareaAutosize
+              ref={ref}
+              minRows={1}
+              placeholder={isFocused ? "Title" : ""}
+              defaultValue={title}
+              onChange={(e) => handleTitleChange(e.target.value)}
+              style={{
+                width: "100%",
+                resize: "none",
+                border: "none",
+                outline: "none",
+                background: "inherit",
+                overflow: "hidden",
+                fontSize: "16px",
+                fontFamily: "inherit",
+                color: "inherit",
+                lineHeight: "1",
+              }}
+            />
+            {
+              <div className="custom-notes-container">
+                {isFocused && !notes && <NotesIcon />}
+                <TextareaAutosize
+                  ref={notesRef}
+                  minRows={1}
+                  placeholder="Notes"
+                  defaultValue={notes}
+                  onChange={(e) => handleNotesChange(e.target.value)}
+                  style={{
+                    width: "100%",
+                    resize: "none",
+                    border: "none",
+                    outline: "none",
+                    background: "inherit",
+                    overflow: "hidden",
+                    fontSize: "14px",
+                    fontFamily: "inherit",
+                    lineHeight: "1",
+                    visibility:
+                      isNotesFocused || isFocused || notes
+                        ? "visible"
+                        : "hidden",
+                  }}
+                />
+              </div>
+            }
+          </div>
+          <TaskMenu task={task} tasklist={tasklist} />
         </div>
-        <TaskMenu task={task} tasklist={tasklist} />
       </div>
+      <TaskChildren parent={task.id} />
     </div>
   );
 }

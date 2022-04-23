@@ -75,7 +75,7 @@ export default function TaskMenu({
           {tasklistState.items.map((tasklist) => {
             if (tasklist.id === tasklistState.selected?.id!) {
               return (
-                <MenuItem>
+                <MenuItem key={tasklist.id}>
                   <ListItemIcon>
                     <Check />
                   </ListItemIcon>
@@ -84,7 +84,7 @@ export default function TaskMenu({
               );
             }
             return (
-              <MenuItem>
+              <MenuItem key={tasklist.id}>
                 <ListItemText inset>{tasklist.title}</ListItemText>
               </MenuItem>
             );

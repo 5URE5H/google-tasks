@@ -2,21 +2,41 @@ import { createContext, ReactNode, useContext, useReducer } from "react";
 import {
   CREATE_TASK,
   DELETE_TASK,
+  FETCH_ALL_TASKS,
+  FETCH_CHILDREN,
   FETCH_TASKS,
   UPDATE_TASK,
 } from "./constants";
-import { TaskAction, TaskContextType, TaskState } from "./types";
+import { TaskAction, TaskContextType, TaskState, TaskStatus } from "./types";
 
 const initialState: TaskState = {
+  allItems: [],
   items: [],
+  children: [],
 };
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined);
 
 const taskReducer = (state: TaskState, action: TaskAction) => {
   switch (action.type) {
+    case FETCH_ALL_TASKS:
+      return { ...state, allItems: action.payload };
     case FETCH_TASKS:
-      return { ...state, items: action.payload };
+      return {
+        ...state,
+        items: state.allItems.filter(
+          (task) => task.status === TaskStatus.needsAction && !task.parent
+        ),
+      };
+    case FETCH_CHILDREN:
+      return {
+        ...state,
+        children: state.allItems.filter(
+          (task) =>
+            task.status === TaskStatus.needsAction &&
+            task.parent === action.payload
+        ),
+      };
     case CREATE_TASK:
       return { ...state, items: [action.payload, ...state.items] };
     case UPDATE_TASK:
