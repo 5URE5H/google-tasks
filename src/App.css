@@ -1,5 +1,3 @@
-
-
 .custom-button-container {
   display: flex;
   margin: 0 1rem 1rem 1rem;
@@ -14,6 +12,12 @@
   padding-left: 1rem !important;
 }
 
+.custom-modal-buttons-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
 .custom-task {
   display: flex !important;
   flex-direction: row !important;
@@ -23,7 +27,7 @@
 
 .custom-task-textarea {
   flex: 1;
-  margin-top: .25rem;
+  margin-top: 0.25rem;
 }
 
 .custom-task-container {
@@ -43,4 +47,3 @@
 .MuiListItem-button.active .MuiTypography-root {
   font-weight: 600 !important;
 }
-
