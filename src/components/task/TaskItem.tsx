@@ -127,12 +127,18 @@ export default function TaskItem({
               }}
             />
             {
-              <div className="custom-notes-container">
+              <div
+                className={`custom-notes-container ${
+                  isFocused || isNotesFocused || notes
+                    ? "custom-notes-focused"
+                    : ""
+                }`}
+              >
                 {isFocused && !notes && <NotesIcon />}
                 <TextareaAutosize
                   ref={notesRef}
                   minRows={1}
-                  placeholder="Notes"
+                  placeholder="Details"
                   defaultValue={notes}
                   onChange={(e) => handleNotesChange(e.target.value)}
                   style={{
@@ -145,10 +151,7 @@ export default function TaskItem({
                     fontSize: "14px",
                     fontFamily: "inherit",
                     lineHeight: "1",
-                    visibility:
-                      isNotesFocused || isFocused || notes
-                        ? "visible"
-                        : "hidden",
+                    opacity: isNotesFocused || isFocused || notes ? 1 : 0,
                   }}
                 />
               </div>

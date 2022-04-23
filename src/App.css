@@ -37,6 +37,11 @@
 .custom-notes-container {
   display: flex;
   gap: 0.5rem;
+  height: 0;
+}
+
+.custom-notes-focused {
+  height: unset;
 }
 
 .custom-notes-container textarea {
