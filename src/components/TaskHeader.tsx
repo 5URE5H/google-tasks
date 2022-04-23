@@ -18,8 +18,8 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Switch Account', 'Logout'];
+const pages = ["Products", "Pricing", "Blog"];
+const settings = ["Switch Account", "Logout"];
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -69,8 +69,12 @@ export default function TaskHeader() {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+    null
+  );
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -191,7 +195,7 @@ export default function TaskHeader() {
             component="div"
             sx={{ display: { xs: "none", sm: "block" } }}
           >
-            TASKS
+            Tasks
           </Typography>
           <Search>
             <SearchIconWrapper>
@@ -203,16 +207,22 @@ export default function TaskHeader() {
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, marginRight: '1rem' }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                <MailIcon />
+          <Box
+            sx={{ display: { xs: "none", md: "flex" }, marginRight: "1rem" }}
+          >
+            <IconButton
+              size="large"
+              aria-label="show 4 new mails"
+              color="inherit"
+            >
+              <MailIcon />
             </IconButton>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
             >
-                <NotificationsIcon />
+              <NotificationsIcon />
             </IconButton>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
@@ -222,17 +232,17 @@ export default function TaskHeader() {
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}

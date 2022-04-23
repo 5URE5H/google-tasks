@@ -2,9 +2,9 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Input from "@mui/material/Input";
 import Radio from "@mui/material/Radio";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { updateTaskApi } from "../../api";
+import { deleteTaskApi, updateTaskApi } from "../../api";
 import { useDebounce } from "../../hooks/useDebounce";
-import { UPDATE_TASK } from "../../store/constants";
+import { DELETE_TASK, FETCH_TASKS, UPDATE_TASK } from "../../store/constants";
 import { useTask } from "../../store/Task.store";
 import { Task, TaskList, TaskStatus } from "../../store/types";
 import NotesIcon from "@mui/icons-material/Notes";
@@ -15,6 +15,10 @@ import { useFocus } from "../../hooks/useFocus";
 import Tasks from "./Tasks";
 import TaskChildren from "./TaskChildren";
 import * as _ from "lodash";
+import { useHover } from "../../hooks/useHover";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import CheckIcon from "@mui/icons-material/Check";
 
 export default function TaskItem({
   task,
@@ -26,15 +30,11 @@ export default function TaskItem({
   const [taskState, taskDispatch] = useTask();
   const [ref, isFocused] = useFocus();
   const [notesRef, isNotesFocused] = useFocus();
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const [title, setTitle] = useState(task.title);
   const [notes, setNotes] = useState(task.notes);
   const [status, setStatus] = useState(task.status);
-
-  const titleDebounce = useDebounce(title, 1000);
-  const notesDebounce = useDebounce(notes, 1000);
-
-  // const fnRef = useRef<any>();
 
   const updateTask = useCallback(
     ({ taskListId, taskId, title, notes, status }: any) => {
@@ -46,9 +46,11 @@ export default function TaskItem({
         title,
         notes,
         status,
-      }).then((response) => {
-        console.log(response);
+      }).then((response: any) => {
         taskDispatch({ type: UPDATE_TASK, payload: response });
+        if (response.status === TaskStatus.completed) {
+          taskDispatch({ type: FETCH_TASKS, payload: undefined });
+        }
       });
     },
     [taskDispatch]
@@ -82,14 +84,21 @@ export default function TaskItem({
   };
 
   const handleStatusChange = () => {
-    setStatus(TaskStatus.completed);
-    debouncedUpdateTask({
-      taskListId: tasklist.id,
-      taskId: task.id,
-      title,
-      notes,
-      status: TaskStatus.completed,
-    });
+    setIsCompleted(true);
+    if (task.title === "") {
+      deleteTaskApi({ taskListId: tasklist.id, taskId: task.id }).then(() => {
+        taskDispatch({ type: DELETE_TASK, payload: task });
+      });
+    } else {
+      setStatus(TaskStatus.completed);
+      debouncedUpdateTask({
+        taskListId: tasklist.id,
+        taskId: task.id,
+        title,
+        notes,
+        status: TaskStatus.completed,
+      });
+    }
   };
 
   return (
@@ -100,12 +109,27 @@ export default function TaskItem({
         }`}
       >
         <div className="custom-task">
-          <Radio
-            checked={status === "completed"}
-            onChange={handleStatusChange}
-            value={task}
-            name="radio-buttons"
-          />
+          <div className="custom-radio-container">
+            {<Radio name="radio-buttons" />}
+
+            {
+              <Tooltip
+                title="Mark completed"
+                disableInteractive
+                enterDelay={1000}
+              >
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="span"
+                  onClick={handleStatusChange}
+                >
+                  <CheckIcon />
+                </IconButton>
+              </Tooltip>
+            }
+          </div>
+
           <div className="custom-task-textarea">
             <TextareaAutosize
               ref={ref}
@@ -124,6 +148,7 @@ export default function TaskItem({
                 fontFamily: "inherit",
                 color: "inherit",
                 lineHeight: "1",
+                textDecoration: isCompleted ? "line-through" : "none",
               }}
             />
             {
@@ -134,7 +159,9 @@ export default function TaskItem({
                     : ""
                 }`}
               >
-                {isFocused && !notes && <NotesIcon />}
+                {isFocused && !notes && (
+                  <NotesIcon className="custom-notes-icon" />
+                )}
                 <TextareaAutosize
                   ref={notesRef}
                   minRows={1}

@@ -1,6 +1,6 @@
 .custom-button-container {
   display: flex;
-  margin: 0 1rem 1rem 2rem;
+  margin: 0 1rem 1rem 1rem;
 }
 
 .custom-button {
@@ -31,7 +31,7 @@
 }
 
 .custom-task-container {
-  padding: 0 1rem 0 2rem;
+  padding: 0 1rem 0 1rem;
 }
 
 .custom-notes-container {
@@ -47,6 +47,11 @@
 .custom-notes-container textarea {
   font-size: 14px;
   color: gray;
+}
+
+.custom-notes-icon {
+  color: gray;
+  margin-top: -0.1rem;
 }
 
 .custom-task-focused {
@@ -67,5 +72,22 @@
 }
 
 .custom-child-tasks .custom-task-container {
-  padding-left: 4rem;
+  padding-left: 3rem;
+}
+
+.custom-radio-container .MuiRadio-root {
+  display: block;
+}
+
+.custom-radio-container .MuiIconButton-root {
+  display: none;
+}
+
+.custom-radio-container:hover .MuiRadio-root {
+  display: none;
+}
+
+.custom-radio-container:hover .MuiIconButton-root {
+  display: flex;
+  margin-right: 0.11rem;
 }
