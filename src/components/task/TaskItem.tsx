@@ -6,8 +6,12 @@ import { updateTaskApi } from "../../api";
 import { useDebounce } from "../../hooks/useDebounce";
 import { UPDATE_TASK } from "../../store/constants";
 import { useTask } from "../../store/Task.store";
-import { Task, TaskList } from "../../store/types";
+import { Task, TaskList, TaskStatus } from "../../store/types";
+import NotesIcon from "@mui/icons-material/Notes";
+import EventIcon from "@mui/icons-material/Event";
 import TaskMenu from "./TaskMenu";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
+import { useFocus } from "../../hooks/useFocus";
 
 export default function TaskItem({
   task,
@@ -17,9 +21,12 @@ export default function TaskItem({
   tasklist: TaskList;
 }) {
   const [taskState, taskDispatch] = useTask();
+  const [ref, isFocused] = useFocus();
+  const [notesRef, isNotesFocused] = useFocus();
 
   const [title, setTitle] = useState(task.title);
   const [notes, setNotes] = useState(task.notes);
+  const [status, setStatus] = useState(task.status);
 
   const titleDebounce = useDebounce(title, 1000);
   const notesDebounce = useDebounce(notes, 1000);
@@ -36,6 +43,7 @@ export default function TaskItem({
         taskId: task.id,
         title: titleDebounce,
         notes: notesDebounce,
+        status: status,
       }).then((response) => {
         console.log(response);
         taskDispatch({ type: UPDATE_TASK, payload: response });
@@ -43,7 +51,14 @@ export default function TaskItem({
     };
 
     updateTask();
-  }, [titleDebounce, notesDebounce, tasklist.id, task.id, taskDispatch]);
+  }, [
+    titleDebounce,
+    notesDebounce,
+    status,
+    tasklist.id,
+    task.id,
+    taskDispatch,
+  ]);
 
   const handleTitleChange = (value: string) => {
     setTitle(value);
@@ -53,33 +68,70 @@ export default function TaskItem({
     setNotes(value);
   };
 
+  const handleStatusChange = () => {
+    setStatus(TaskStatus.completed);
+  };
+
+  console.log(isFocused, isNotesFocused);
+
   return (
-    <div className="custom-task-container">
+    <div
+      className={`custom-task-container ${
+        isFocused || isNotesFocused ? "custom-task-focused" : ""
+      }`}
+    >
       <div className="custom-task">
-        <FormControlLabel value="other" control={<Radio />} label="" />
+        <Radio
+          checked={status === "completed"}
+          onChange={handleStatusChange}
+          value={task}
+          name="radio-buttons"
+        />
         <div className="custom-task-textarea">
-          <Input
-            fullWidth
-            id="standard-multiline-static"
-            multiline
-            rows={1}
-            disableUnderline
-            value={title}
+          <TextareaAutosize
+            ref={ref}
+            minRows={1}
+            placeholder="Title"
+            defaultValue={title}
             onChange={(e) => handleTitleChange(e.target.value)}
+            style={{
+              width: "100%",
+              resize: "none",
+              border: "none",
+              outline: "none",
+              background: "inherit",
+              overflow: "hidden",
+              fontSize: "16px",
+              fontFamily: "inherit",
+              color: "inherit",
+              lineHeight: "1",
+            }}
           />
-          {notes && (
-            <Input
-              fullWidth
-              id="standard-multiline-static"
-              multiline
-              rows={1}
-              disableUnderline
-              value={notes}
-              onChange={(e) => handleNotesChange(e.target.value)}
-              size="small"
-              placeholder="Details"
-            />
-          )}
+          {
+            <div className="custom-notes-container">
+              {isFocused && !notes && <NotesIcon />}
+              <TextareaAutosize
+                ref={notesRef}
+                minRows={1}
+                placeholder="Notes"
+                defaultValue={notes}
+                onChange={(e) => handleNotesChange(e.target.value)}
+                style={{
+                  width: "100%",
+                  resize: "none",
+                  border: "none",
+                  outline: "none",
+                  background: "inherit",
+                  overflow: "hidden",
+                  fontSize: "14px",
+                  fontFamily: "inherit",
+                  lineHeight: "1",
+                  visibility:
+                    isNotesFocused || isFocused || notes ? "visible" : "hidden",
+                }}
+              />
+            </div>
+          }
         </div>
         <TaskMenu task={task} tasklist={tasklist} />
       </div>

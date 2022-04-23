@@ -1,6 +1,6 @@
 .custom-button-container {
   display: flex;
-  margin: 0 1rem 1rem 1rem;
+  margin: 0 1rem 1rem 2rem;
 }
 
 .custom-button {
@@ -27,15 +27,28 @@
 
 .custom-task-textarea {
   flex: 1;
-  margin-top: 0.25rem;
+  margin: 0.65rem 0 0.25rem;
 }
 
 .custom-task-container {
   padding: 0 1rem 0 2rem;
 }
 
-.custom-task-container:hover,
-.custom-task-container:focus {
+.custom-notes-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.custom-notes-container textarea {
+  font-size: 14px;
+  color: gray;
+}
+
+.custom-task-focused {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.custom-task-container:hover {
   text-decoration: none;
   background-color: rgba(0, 0, 0, 0.04);
 }

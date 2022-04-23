@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import { AddTask } from "@mui/icons-material";
 import TaskItem from "./TaskItem";
 import TaskListMenu from "../tasklist/TaskListMenu";
+import TaskDrawer from "./TaskDrawer";
 
 export default function Tasks() {
   const [taskListState, taskListDispatch] = useTaskList();
@@ -56,6 +57,7 @@ export default function Tasks() {
             />
           ))}
       </div>
+      <TaskDrawer />
     </Box>
   );
 }

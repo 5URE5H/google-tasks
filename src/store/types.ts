@@ -35,7 +35,7 @@ export interface Task {
   ];
 }
 
-enum TaskStatus {
+export enum TaskStatus {
   needsAction = "needsAction",
   completed = "completed",
 }
