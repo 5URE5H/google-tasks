@@ -240,14 +240,7 @@ export default function TaskHeader() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="My account">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar
-                  alt="Remy Sharp"
-                  src={
-                    userState.userInfo?.imageUrl
-                      ? userState.userInfo?.imageUrl
-                      : "/static/images/avatar/2.jpg"
-                  }
-                />
+                <Avatar alt="Remy Sharp" src={userState.userInfo?.imageUrl} />
               </IconButton>
             </Tooltip>
             <Menu

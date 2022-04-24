@@ -21,18 +21,25 @@ import {
 } from "../../store/constants";
 import Button from "@mui/material/Button";
 import Input from "@mui/material/Input";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogActions from "@mui/material/DialogActions";
+import TextField from "@mui/material/TextField";
+import FormHelperText from "@mui/material/FormHelperText";
 
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  borderRadius: 2,
-  p: 3,
-};
+// const style = {
+//   position: "absolute" as "absolute",
+//   top: "50%",
+//   left: "50%",
+//   transform: "translate(-50%, -50%)",
+//   width: 400,
+//   bgcolor: "background.paper",
+//   boxShadow: 24,
+//   borderRadius: 2,
+//   p: 3,
+// };
 
 export default function TaskListMenu() {
   const [tasklistState, tasklistDispatch] = useTaskList();
@@ -84,6 +91,9 @@ export default function TaskListMenu() {
   };
 
   const handleTasklistDone = () => {
+    if (!taskListTitle) {
+      return;
+    }
     updateTaskListApi({
       taskListId: tasklistState.selected?.id,
       title: taskListTitle,
@@ -150,61 +160,57 @@ export default function TaskListMenu() {
         </MenuList>
       </Menu>
 
-      <Modal
+      <Dialog
+        fullWidth={true}
+        maxWidth={"xs"}
         open={openModal}
         onClose={handleCloseModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <Typography variant="h6">Rename list</Typography>
-          <Input
+        <DialogTitle>Rename list</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            type="email"
             fullWidth
-            id="standard-multiline-static"
+            variant="standard"
+            placeholder="Enter name"
+            error={!taskListTitle}
             value={taskListTitle}
             onChange={(e) => handleTasklistChange(e.target.value)}
-            placeholder="Enter name"
           />
-          <div className="custom-modal-buttons-container">
-            <Button
-              size="medium"
-              color="secondary"
-              onClick={handleTasklistCancel}
-            >
-              Cancel
-            </Button>
-            <Button size="medium" onClick={handleTasklistDone}>
-              Done
-            </Button>
-          </div>
-        </Box>
-      </Modal>
+          {!taskListTitle && (
+            <FormHelperText id="name" style={{ color: "#d32f2f" }}>
+              Task list name cannot be empty.
+            </FormHelperText>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleTasklistCancel}>Cancel</Button>
+          <Button onClick={handleTasklistDone} disabled={!taskListTitle}>
+            Done
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-      <Modal
+      <Dialog
+        fullWidth={true}
+        maxWidth={"xs"}
         open={openDeleteModal}
         onClose={handleCloseDeleteModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <Typography variant="h6">Delete this list?</Typography>
-          <Typography variant="subtitle1" sx={{ mt: 2 }}>
+        <DialogTitle>Delete this list?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
             All tasks in this list will be permanently deleted
-          </Typography>
-          <div className="custom-modal-buttons-container">
-            <Button
-              size="medium"
-              color="secondary"
-              onClick={handleCloseDeleteModal}
-            >
-              Cancel
-            </Button>
-            <Button size="medium" onClick={handleDeleteList}>
-              Delete
-            </Button>
-          </div>
-        </Box>
-      </Modal>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteModal}>Cancel</Button>
+          <Button onClick={handleDeleteList}>Delete</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

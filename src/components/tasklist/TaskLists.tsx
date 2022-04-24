@@ -42,7 +42,7 @@ export default function TaskLists() {
   const createTaskList = () => {
     try {
       addTaskListApi(text).then((res: any) => {
-        console.log(res);
+        dispatch({ type: SELECT_TASKLIST, payload: res });
         loadTaskLists();
       });
     } catch (err) {
@@ -89,7 +89,7 @@ export default function TaskLists() {
           />
         </Box>
         {/* <Divider /> */}
-        <List>
+        <List style={{ paddingTop: 0 }}>
           {state.items.map((tasklist) => (
             <TaskListItem key={tasklist.id} tasklist={tasklist} />
           ))}
