@@ -39,7 +39,11 @@ const taskReducer = (state: TaskState, action: TaskAction) => {
         ),
       };
     case CREATE_TASK:
-      return { ...state, items: [action.payload, ...state.items] };
+      return {
+        ...state,
+        items: [action.payload, ...state.items],
+        allItems: [action.payload, ...state.items],
+      };
     case CREATE_SUB_TASK:
       return { ...state, allItems: [action.payload, ...state.allItems] };
     case UPDATE_TASK:

@@ -76,6 +76,7 @@ export default function TaskListMenu() {
       });
     });
     handleCloseDeleteModal();
+    handleClose();
   };
 
   const handleTasklistChange = (title: string) => {
@@ -91,6 +92,7 @@ export default function TaskListMenu() {
       tasklistDispatch({ type: SELECT_TASKLIST, payload: response });
     });
     handleCloseModal();
+    handleClose();
   };
 
   const handleTasklistCancel = () => {

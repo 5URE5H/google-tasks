@@ -15,12 +15,16 @@ import TaskItem from "./TaskItem";
 import TaskListMenu from "../tasklist/TaskListMenu";
 import TaskDrawer from "./TaskDrawer";
 import { Task, TaskStatus } from "../../store/types";
+import Typography from "@mui/material/Typography";
+import Zero from "../../assets/svg/zero-state.svg";
+import Empty from "../../assets/svg/empty-state.svg";
 
 export default function Tasks({ parent }: { parent?: string }) {
   const [taskListState, taskListDispatch] = useTaskList();
   const [taskState, taskDispatch] = useTask();
 
   useEffect(() => {
+    console.log(taskState);
     const getTasks = async () => {
       const response = (await getTasksApi(taskListState.selected?.id!)) as any;
       const filteredTasks: Task[] = response.items.filter(
@@ -42,7 +46,7 @@ export default function Tasks({ parent }: { parent?: string }) {
   };
 
   return (
-    <Box component="main" sx={{ mt: 2, width: "50vw" }}>
+    <Box component="main" sx={{ mt: 2, width: "50vw", height: "95vh" }}>
       <Toolbar />
       <div className="custom-button-container">
         <Button
@@ -65,6 +69,48 @@ export default function Tasks({ parent }: { parent?: string }) {
             />
           ))}
       </div>
+      {!taskState.allItems.length && (
+        <div className="custom-zero-tasks">
+          <img
+            src={Zero}
+            alt="Add new tasks"
+            width={"30%"}
+            style={{ marginBottom: "3rem" }}
+          />
+          <Typography variant="h4" gutterBottom component="div">
+            A fresh start
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            gutterBottom
+            component="div"
+            style={{ color: "gray" }}
+          >
+            Anything to add?
+          </Typography>
+        </div>
+      )}
+      {!taskState.items.length && (
+        <div className="custom-zero-tasks">
+          <img
+            src={Empty}
+            alt="Add new tasks"
+            width={"30%"}
+            style={{ marginBottom: "3rem" }}
+          />
+          <Typography variant="h4" gutterBottom component="div">
+            Nicely done!
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            gutterBottom
+            component="div"
+            style={{ color: "gray" }}
+          >
+            You've finished all your tasks. Take a second to recharge.
+          </Typography>
+        </div>
+      )}
     </Box>
   );
 }

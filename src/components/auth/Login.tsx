@@ -17,6 +17,7 @@ const Login: FunctionComponent<LoginProps> = () => {
 
   const onSuccess = (res: any) => {
     console.log(res);
+    dispatch({ type: APP_LOADED });
     dispatch({ type: USER_SIGNED_IN });
     dispatch({ type: UPDATE_USER_INFO, payload: res.profileObj });
   };
