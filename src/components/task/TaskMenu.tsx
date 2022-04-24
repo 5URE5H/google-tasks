@@ -65,6 +65,7 @@ export default function TaskMenu({
         aria-expanded={open ? "true" : undefined}
         aria-haspopup="true"
         onClick={handleClick}
+        tabIndex={-1}
       >
         <MoreVertIcon />
       </IconButton>

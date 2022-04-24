@@ -110,7 +110,7 @@ export default function TaskItem({
       >
         <div className="custom-task">
           <div className="custom-radio-container">
-            {<Radio name="radio-buttons" />}
+            {<Radio name="radio-buttons" tabIndex={-1} />}
 
             {
               <Tooltip
