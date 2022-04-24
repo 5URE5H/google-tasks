@@ -1,5 +1,7 @@
+export const APP_LOADED = "APP_LOADED";
 export const USER_SIGNED_IN = "USER_SIGNED_IN";
 export const USER_SIGNED_OUT = "USER_SIGNED_OUT";
+export const UPDATE_USER_INFO = "UPDATE_USER_INFO";
 
 export const FETCH_TASKLISTS = "FETCH_TASKLISTS";
 export const FETCH_TASKLIST = "FETCH_TASKLIST";

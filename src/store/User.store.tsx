@@ -6,14 +6,20 @@ import {
   useEffect,
   useReducer,
 } from "react";
-import { USER_SIGNED_IN, USER_SIGNED_OUT } from "./constants";
+import {
+  APP_LOADED,
+  UPDATE_USER_INFO,
+  USER_SIGNED_IN,
+  USER_SIGNED_OUT,
+} from "./constants";
 import { authorizeApi } from "../api";
 import { UserAction, UserContextType, UserState } from "./types";
 import Login from "../components/auth/Login";
+import TaskWelcome from "../components/TaskWelcome";
 
 const initialState = {
   isSignedIn: false,
-  isLoading: false,
+  isLoading: true,
   userInfo: undefined,
 };
 
@@ -21,10 +27,14 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 const UserReducer = (state: UserState, action: UserAction) => {
   switch (action.type) {
+    case APP_LOADED:
+      return { ...state, isLoading: false };
     case USER_SIGNED_IN:
       return { ...state, isSignedIn: true };
     case USER_SIGNED_OUT:
       return { ...state, isSignedIn: false };
+    case UPDATE_USER_INFO:
+      return { ...state, userInfo: action.payload };
     default:
       return state;
   }
@@ -36,26 +46,37 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     gapi.load("client:auth2", () => {
       authorizeApi({ immediate: true }).then(() => {
-        const isUserSignedIn = gapi.auth2
-          ?.getAuthInstance()
-          .isSignedIn.get() as boolean;
+        let isUserSignedIn = false;
+
+        if (gapi.auth2?.getAuthInstance()) {
+          isUserSignedIn = gapi.auth2
+            ?.getAuthInstance()
+            .isSignedIn.get() as boolean;
+        }
 
         if (isUserSignedIn) {
           dispatch({ type: USER_SIGNED_IN });
         } else {
           dispatch({ type: USER_SIGNED_OUT });
         }
+        dispatch({ type: APP_LOADED });
       });
     });
   }, []);
 
-  return !state.isSignedIn ? (
-    <Login />
-  ) : (
-    <UserContext.Provider value={[state, dispatch]}>
-      {children}
-    </UserContext.Provider>
-  );
+  if (state.isLoading) {
+    return <TaskWelcome />;
+  } else {
+    return !state.isSignedIn ? (
+      <UserContext.Provider value={[state, dispatch]}>
+        <Login />
+      </UserContext.Provider>
+    ) : (
+      <UserContext.Provider value={[state, dispatch]}>
+        {children}
+      </UserContext.Provider>
+    );
+  }
 };
 
 export const useUserSession = () => {

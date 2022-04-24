@@ -17,22 +17,24 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
+import Logo from "../assets/images/logo.png";
+import { useUserSession } from "../store/User.store";
+import Logout from "./auth/Logout";
 
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Switch Account", "Logout"];
+// const settings = [];
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  backgroundColor: "#f0f0f0",
   "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor: "#e5e5e5",
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
   width: "100%",
   [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
+    marginLeft: theme.spacing(21),
     width: "auto",
   },
 }));
@@ -50,18 +52,20 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
+    padding: theme.spacing(1.8, 2, 1.8, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("md")]: {
-      width: "20ch",
+      width: "50ch",
     },
   },
 }));
 
 export default function TaskHeader() {
+  const [userState, userDispatch] = useUserSession();
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -186,14 +190,22 @@ export default function TaskHeader() {
     <>
       <AppBar
         position="fixed"
+        className="custom-header"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         <Toolbar>
+          <img src={Logo} alt="logo" width={50} />
           <Typography
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
+            sx={{
+              display: {
+                xs: "none",
+                sm: "block",
+                fontWeight: "bold",
+              },
+            }}
           >
             Tasks
           </Typography>
@@ -226,9 +238,16 @@ export default function TaskHeader() {
             </IconButton>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="My account">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar
+                  alt="Remy Sharp"
+                  src={
+                    userState.userInfo?.imageUrl
+                      ? userState.userInfo?.imageUrl
+                      : "/static/images/avatar/2.jpg"
+                  }
+                />
               </IconButton>
             </Tooltip>
             <Menu
@@ -247,11 +266,14 @@ export default function TaskHeader() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
+              {/* {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
-              ))}
+              ))} */}
+              <MenuItem key="logout-key" onClick={handleCloseUserMenu}>
+                <Logout />
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

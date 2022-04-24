@@ -20,9 +20,9 @@ function App() {
     <div className="App">
       <UserProvider>
         <Box sx={{ display: "flex" }}>
-          <CssBaseline />
-          <TaskHeader></TaskHeader>
           <TaskListProvider>
+            <CssBaseline />
+            <TaskHeader />
             <TaskLists />
             <TaskProvider>
               <Tasks />
