@@ -1,4 +1,4 @@
-import { KeyboardEventHandler, useEffect, useState } from "react";
+import { KeyboardEventHandler, useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
@@ -9,46 +9,21 @@ import { FETCH_TASKLISTS, SELECT_TASKLIST } from "../../store/constants";
 import TextField from "@mui/material/TextField";
 import { addTaskListApi, getTaskListsApi } from "../../api";
 import TaskListItem from "../tasklist/TaskListItem";
+import TasksCompleted from "./TasksCompleted";
+import Typography from "@mui/material/Typography";
+import { useTask } from "../../store/Task.store";
+import { TaskStatus } from "../../store/types";
 
 const drawerWidth = "35vw";
 
 export default function TaskInfo() {
-  const [text, setText] = useState("");
-  const [state, dispatch] = useTaskList();
+  const [taskState, taskDispatch] = useTask();
 
-  useEffect(() => {}, []);
-
-  const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
-    if (event.key === "Enter" && text) {
-      createTaskList();
-    }
-  };
-
-  const loadTaskLists = () => {
-    try {
-      getTaskListsApi().then((res: any) => {
-        dispatch({ type: FETCH_TASKLISTS, payload: res.items });
-        if (!state.selected) {
-          dispatch({ type: SELECT_TASKLIST, payload: res.items[0] });
-        }
-      });
-    } catch (err) {
-      console.error("Failed to fetch tasklists!!", err);
-    }
-  };
-
-  const createTaskList = () => {
-    try {
-      addTaskListApi(text).then((res: any) => {
-        console.log(res);
-        loadTaskLists();
-      });
-    } catch (err) {
-      console.error("Failed to create tasklist!!", err);
-    } finally {
-      setText("");
-    }
-  };
+  const completedItems = useMemo(() => {
+    return taskState.allItems.filter(
+      (task) => task.status === TaskStatus.completed
+    );
+  }, [taskState.allItems]);
 
   return (
     <Drawer
@@ -65,34 +40,14 @@ export default function TaskInfo() {
     >
       <Toolbar />
       <Box sx={{ overflow: "auto" }}>
-        <Box
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: "calc(100% - 16px)" },
-          }}
-          noValidate
-          autoComplete="off"
-          onSubmit={
-            ((event) =>
-              event.preventDefault()) as React.FormEventHandler<HTMLFormElement>
-          }
-        >
-          <TextField
-            id="filled-basic"
-            label="Create new list"
-            placeholder="Type and press enter"
-            variant="filled"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
+        {/* <div>Task Info</div> */}
+        <Divider />
+        <Box component="main" sx={{ ml: 3, mt: 2 }}>
+          <Typography variant="subtitle1" gutterBottom component="div">
+            Completed ({completedItems.length})
+          </Typography>
         </Box>
-        {/* <Divider /> */}
-        <List>
-          {state.items.map((tasklist) => (
-            <TaskListItem key={tasklist.id} tasklist={tasklist} />
-          ))}
-        </List>
+        <TasksCompleted />
       </Box>
     </Drawer>
   );

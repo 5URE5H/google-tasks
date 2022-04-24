@@ -26,8 +26,8 @@ function App() {
             <TaskLists />
             <TaskProvider>
               <Tasks />
+              <TaskInfo />
             </TaskProvider>
-            <TaskInfo />
           </TaskListProvider>
         </Box>
       </UserProvider>

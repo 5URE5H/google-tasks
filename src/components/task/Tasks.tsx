@@ -27,9 +27,6 @@ export default function Tasks({ parent }: { parent?: string }) {
     console.log(taskState);
     const getTasks = async () => {
       const response = (await getTasksApi(taskListState.selected?.id!)) as any;
-      const filteredTasks: Task[] = response.items.filter(
-        (task: Task) => task.status === TaskStatus.needsAction && !task.parent
-      );
       taskDispatch({ type: FETCH_ALL_TASKS, payload: response.items });
       taskDispatch({ type: FETCH_TASKS, payload: undefined });
     };
@@ -90,7 +87,7 @@ export default function Tasks({ parent }: { parent?: string }) {
           </Typography>
         </div>
       )}
-      {!taskState.items.length && (
+      {taskState.allItems.length && !taskState.items.length && (
         <div className="custom-zero-tasks">
           <img
             src={Empty}
