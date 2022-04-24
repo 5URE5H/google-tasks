@@ -192,3 +192,12 @@
   display: flex;
   margin-right: 0.11rem;
 }
+
+.custom-zero-tasks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 90%;
+  text-align: center;
+}
