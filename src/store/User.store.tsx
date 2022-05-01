@@ -45,22 +45,27 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     gapi.load("client:auth2", () => {
-      authorizeApi({ immediate: true }).then(() => {
-        let isUserSignedIn = false;
+      authorizeApi({ immediate: true })
+        .then(() => {
+          let isUserSignedIn = false;
 
-        if (gapi.auth2?.getAuthInstance()) {
-          isUserSignedIn = gapi.auth2
-            ?.getAuthInstance()
-            .isSignedIn.get() as boolean;
-        }
+          if (gapi.auth2?.getAuthInstance()) {
+            isUserSignedIn = gapi.auth2
+              ?.getAuthInstance()
+              .isSignedIn.get() as boolean;
+          }
 
-        if (isUserSignedIn) {
-          dispatch({ type: USER_SIGNED_IN });
-        } else {
+          if (isUserSignedIn) {
+            dispatch({ type: USER_SIGNED_IN });
+          } else {
+            dispatch({ type: USER_SIGNED_OUT });
+          }
+          dispatch({ type: APP_LOADED });
+        })
+        .catch((err) => {
+          dispatch({ type: APP_LOADED });
           dispatch({ type: USER_SIGNED_OUT });
-        }
-        dispatch({ type: APP_LOADED });
-      });
+        });
     });
   }, []);
 
