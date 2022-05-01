@@ -9,13 +9,12 @@ import {
   FETCH_ALL_TASKS,
   FETCH_TASKS,
   LOADING_TASKS,
+  SELECT_TASK,
 } from "../../store/constants";
 import Button from "@mui/material/Button";
 import { AddTask } from "@mui/icons-material";
 import TaskItem from "./TaskItem";
 import TaskListMenu from "../tasklist/TaskListMenu";
-import TaskDrawer from "./TaskDrawer";
-import { Task, TaskStatus } from "../../store/types";
 import Typography from "@mui/material/Typography";
 import Zero from "../../assets/svg/zero-state.svg";
 import Empty from "../../assets/svg/empty-state.svg";
@@ -42,6 +41,7 @@ export default function Tasks({ parent }: { parent?: string }) {
   const handleAddTask = () => {
     addTaskApi({ taskListId: taskListState.selected?.id }).then((response) => {
       taskDispatch({ type: CREATE_TASK, payload: response });
+      taskDispatch({ type: SELECT_TASK, payload: response });
     });
   };
 

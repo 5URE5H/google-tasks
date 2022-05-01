@@ -28,13 +28,19 @@ export default function TaskItem({
   tasklist: TaskList;
 }) {
   const [taskState, taskDispatch] = useTask();
-  const [ref, isFocused] = useFocus();
-  const [notesRef, isNotesFocused] = useFocus();
+  const [updateTaskRef, isFocused, taskRef] = useFocus();
+  const [updateNotesRef, isNotesFocused] = useFocus();
   const [isCompleted, setIsCompleted] = useState(false);
 
   const [title, setTitle] = useState(task.title);
   const [notes, setNotes] = useState(task.notes);
   const [status, setStatus] = useState(task.status);
+
+  useEffect(() => {
+    if (task.id === taskState.selectedItem?.id) {
+      taskRef?.current?.focus();
+    }
+  }, [taskState]);
 
   const updateTask = useCallback(
     ({ taskListId, taskId, title, notes, status }: any) => {
@@ -132,7 +138,7 @@ export default function TaskItem({
 
           <div className="custom-task-textarea">
             <TextareaAutosize
-              ref={ref}
+              ref={updateTaskRef}
               minRows={1}
               placeholder={isFocused || isNotesFocused ? "Title" : ""}
               defaultValue={title}
@@ -163,7 +169,7 @@ export default function TaskItem({
                   <NotesIcon className="custom-notes-icon" />
                 )}
                 <TextareaAutosize
-                  ref={notesRef}
+                  ref={updateNotesRef}
                   minRows={1}
                   placeholder="Details"
                   defaultValue={notes}
