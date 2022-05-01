@@ -6,6 +6,7 @@ export interface TaskState {
   allItems: Task[];
   items: Task[];
   children: Task[];
+  isLoading: boolean;
 }
 
 export interface TaskAction {

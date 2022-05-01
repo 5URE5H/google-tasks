@@ -6,6 +6,7 @@ import {
   FETCH_ALL_TASKS,
   FETCH_CHILDREN,
   FETCH_TASKS,
+  LOADING_TASKS,
   UPDATE_TASK,
 } from "./constants";
 import { TaskAction, TaskContextType, TaskState, TaskStatus } from "./types";
@@ -14,12 +15,15 @@ const initialState: TaskState = {
   allItems: [],
   items: [],
   children: [],
+  isLoading: false,
 };
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined);
 
 const taskReducer = (state: TaskState, action: TaskAction) => {
   switch (action.type) {
+    case LOADING_TASKS:
+      return { ...state, isLoading: action.payload };
     case FETCH_ALL_TASKS:
       return { ...state, allItems: action.payload };
     case FETCH_TASKS:
@@ -42,7 +46,7 @@ const taskReducer = (state: TaskState, action: TaskAction) => {
       return {
         ...state,
         items: [action.payload, ...state.items],
-        allItems: [action.payload, ...state.items],
+        allItems: [action.payload, ...state.allItems],
       };
     case CREATE_SUB_TASK:
       return { ...state, allItems: [action.payload, ...state.allItems] };
