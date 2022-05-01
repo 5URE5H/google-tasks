@@ -9,7 +9,6 @@ import {
   FETCH_ALL_TASKS,
   FETCH_TASKS,
   LOADING_TASKS,
-  SELECT_TASK,
 } from "../../store/constants";
 import Button from "@mui/material/Button";
 import { AddTask } from "@mui/icons-material";
@@ -41,7 +40,6 @@ export default function Tasks({ parent }: { parent?: string }) {
   const handleAddTask = () => {
     addTaskApi({ taskListId: taskListState.selected?.id }).then((response) => {
       taskDispatch({ type: CREATE_TASK, payload: response });
-      taskDispatch({ type: SELECT_TASK, payload: response });
     });
   };
 

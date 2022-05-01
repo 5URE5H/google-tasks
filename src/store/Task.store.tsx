@@ -51,9 +51,14 @@ const taskReducer = (state: TaskState, action: TaskAction) => {
         ...state,
         items: [action.payload, ...state.items],
         allItems: [action.payload, ...state.allItems],
+        selectedItem: action.payload,
       };
     case CREATE_SUB_TASK:
-      return { ...state, allItems: [action.payload, ...state.allItems] };
+      return {
+        ...state,
+        allItems: [action.payload, ...state.allItems],
+        selectedItem: action.payload,
+      };
     case UPDATE_TASK:
       return {
         ...state,
@@ -63,6 +68,7 @@ const taskReducer = (state: TaskState, action: TaskAction) => {
         allItems: state.allItems.map((task) =>
           task.id === action.payload.id ? action.payload : task
         ),
+        selectedItem: undefined,
       };
     case DELETE_TASK:
       return {
