@@ -7,6 +7,7 @@ import {
   FETCH_CHILDREN,
   FETCH_TASKS,
   LOADING_TASKS,
+  SELECT_TASK,
   UPDATE_TASK,
 } from "./constants";
 import { TaskAction, TaskContextType, TaskState, TaskStatus } from "./types";
@@ -16,6 +17,7 @@ const initialState: TaskState = {
   items: [],
   children: [],
   isLoading: false,
+  selectedItem: undefined,
 };
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined);
@@ -24,6 +26,8 @@ const taskReducer = (state: TaskState, action: TaskAction) => {
   switch (action.type) {
     case LOADING_TASKS:
       return { ...state, isLoading: action.payload };
+    case SELECT_TASK:
+      return { ...state, selectedItem: action.payload };
     case FETCH_ALL_TASKS:
       return { ...state, allItems: action.payload };
     case FETCH_TASKS:

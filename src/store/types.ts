@@ -7,6 +7,7 @@ export interface TaskState {
   items: Task[];
   children: Task[];
   isLoading: boolean;
+  selectedItem?: Task | undefined;
 }
 
 export interface TaskAction {

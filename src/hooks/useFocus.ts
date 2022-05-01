@@ -1,8 +1,9 @@
-import { Ref, useRef, useState } from "react";
+import { MutableRefObject, Ref, useRef, useState } from "react";
 
 export const useFocus = <T extends HTMLTextAreaElement>(): [
   Ref<T>,
-  boolean
+  boolean,
+  MutableRefObject<T | undefined>
 ] => {
   const ref = useRef<T | undefined>(undefined);
 
@@ -32,5 +33,5 @@ export const useFocus = <T extends HTMLTextAreaElement>(): [
     return ref;
   };
 
-  return [updateRef, isFocused];
+  return [updateRef, isFocused, ref];
 };
