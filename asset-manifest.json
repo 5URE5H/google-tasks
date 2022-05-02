@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/google-tasks/static/css/main.ee43c9de.css",
-    "main.js": "/google-tasks/static/js/main.26e2eb1f.js",
+    "main.js": "/google-tasks/static/js/main.dfd0e744.js",
     "static/js/787.ae409d79.chunk.js": "/google-tasks/static/js/787.ae409d79.chunk.js",
     "static/media/warm-welcome.svg": "/google-tasks/static/media/warm-welcome.d46ce0ff674917ebda4e6c8f1fa189eb.svg",
     "static/media/zero-state.svg": "/google-tasks/static/media/zero-state.76abf1b84b3536905dfa1247cb2b35c7.svg",
@@ -9,11 +9,11 @@
     "static/media/empty-state.svg": "/google-tasks/static/media/empty-state.8130d6b55ef43bdebcc3e7efadf6c748.svg",
     "index.html": "/google-tasks/index.html",
     "main.ee43c9de.css.map": "/google-tasks/static/css/main.ee43c9de.css.map",
-    "main.26e2eb1f.js.map": "/google-tasks/static/js/main.26e2eb1f.js.map",
+    "main.dfd0e744.js.map": "/google-tasks/static/js/main.dfd0e744.js.map",
     "787.ae409d79.chunk.js.map": "/google-tasks/static/js/787.ae409d79.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ee43c9de.css",
-    "static/js/main.26e2eb1f.js"
+    "static/js/main.dfd0e744.js"
   ]
 }
