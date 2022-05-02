@@ -1,9 +1,7 @@
 import { useMemo } from "react";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import { useTask } from "../../store/Task.store";
 import { useTaskList } from "../../store/TaskList.store";
-import TaskItem from "./TaskItem";
 import { TaskStatus } from "../../store/types";
 import TaskItemCompleted from "./TaskItemCompleted";
 

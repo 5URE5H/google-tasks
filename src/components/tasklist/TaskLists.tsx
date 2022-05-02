@@ -10,7 +10,7 @@ import TextField from "@mui/material/TextField";
 import { addTaskListApi, getTaskListsApi } from "../../api";
 import TaskListItem from "./TaskListItem";
 
-const drawerWidth = "15vw";
+const drawerWidth = "20vw";
 
 export default function TaskLists() {
   const [text, setText] = useState("");

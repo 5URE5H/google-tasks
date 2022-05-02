@@ -57,7 +57,7 @@ const taskReducer = (state: TaskState, action: TaskAction) => {
       return {
         ...state,
         allItems: [action.payload, ...state.allItems],
-        selectedItem: action.payload,
+        selectedItem: undefined,
       };
     case UPDATE_TASK:
       return {
@@ -77,6 +77,7 @@ const taskReducer = (state: TaskState, action: TaskAction) => {
           (task) => task.id !== action.payload.id
         ),
         items: state.items.filter((task) => task.id !== action.payload.id),
+        selectedItem: undefined,
       };
     default:
       return state;

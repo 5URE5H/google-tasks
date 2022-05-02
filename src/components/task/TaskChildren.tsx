@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTask } from "../../store/Task.store";
 import { useTaskList } from "../../store/TaskList.store";
-import { getTasksApi } from "../../api";
-import { FETCH_CHILDREN, FETCH_TASKS } from "../../store/constants";
 import TaskItem from "./TaskItem";
 import { Task, TaskStatus } from "../../store/types";
 
