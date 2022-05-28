@@ -197,6 +197,26 @@
   background-color: var(--hover-color);
 }
 
+.task-menu-btn {
+  opacity: 0;
+}
+
+.task-menu-btn.active {
+  opacity: 1;
+}
+
+.custom-task-container:hover .task-menu-btn {
+  opacity: 1;
+}
+
+.custom-delete-icon {
+  opacity: 0;
+}
+
+.custom-task:hover .custom-delete-icon {
+  opacity: 1;
+}
+
 .custom-task-container-dark:hover {
   text-decoration: none;
   background-color: var(--hover-color-dark);

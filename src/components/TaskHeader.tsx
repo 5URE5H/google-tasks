@@ -234,14 +234,16 @@ export default function TaskHeader() {
           <Box
             sx={{ display: { xs: "none", md: "flex" }, marginRight: "1rem" }}
           >
-            <IconButton
-              size="large"
-              aria-label="switch to dark/light mode"
-              color="inherit"
-              onClick={toggleTheme}
-            >
-              {themeState.isDarkMode ? <LightModeIcon /> : <NightlightIcon />}
-            </IconButton>
+            <Tooltip title="Toggle dark mode">
+              <IconButton
+                size="medium"
+                aria-label="switch to dark/light mode"
+                color="inherit"
+                onClick={toggleTheme}
+              >
+                {themeState.isDarkMode ? <LightModeIcon /> : <NightlightIcon />}
+              </IconButton>
+            </Tooltip>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="My account">

@@ -200,7 +200,13 @@ export default function TaskItem({
               </div>
             }
           </div>
-          <TaskMenu task={task} tasklist={tasklist} />
+          <div
+            className={`task-menu-btn ${
+              isFocused || isNotesFocused ? "active" : ""
+            }`}
+          >
+            <TaskMenu task={task} tasklist={tasklist} />
+          </div>
         </div>
       </div>
       <TaskChildren parent={task.id} />
