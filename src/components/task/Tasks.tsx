@@ -81,8 +81,12 @@ export default function Tasks({ parent }: { parent?: string }) {
               <img
                 src={Zero}
                 alt="Add new tasks"
-                width={"30%"}
-                style={{ marginBottom: "3rem" }}
+                width={"50%"}
+                style={{
+                  marginBottom: "3rem",
+                  minWidth: "300px",
+                  filter: themeState.isDarkMode ? "invert(0.25)" : "invert(0)",
+                }}
               />
               <Typography variant="h4" gutterBottom component="div">
                 A fresh start
@@ -102,9 +106,10 @@ export default function Tasks({ parent }: { parent?: string }) {
               <img
                 src={Empty}
                 alt="Add new tasks"
-                width={"30%"}
+                width={"50%"}
                 style={{
                   marginBottom: "3rem",
+                  minWidth: "300px",
                   filter: themeState.isDarkMode ? "invert(0.25)" : "invert(0)",
                 }}
               />

@@ -52,6 +52,20 @@ export default function TaskMenu({
     handleClose();
   };
 
+  const handleMoveTask = (list: TaskList) => {
+    addTaskApi({
+      taskListId: list.id,
+      title: task.title,
+      notes: task.notes,
+      due: task.due,
+    }).then(() => {
+      deleteTaskApi({ taskListId: tasklist.id, taskId: task.id }).then(() => {
+        taskDispatch({ type: DELETE_TASK, payload: task });
+      });
+    });
+    handleClose();
+  };
+
   return (
     <div>
       <IconButton
@@ -75,27 +89,31 @@ export default function TaskMenu({
         onClose={handleClose}
       >
         <MenuList dense>
-          <MenuItem>
-            <ListItemText onClick={handleAddSubTask}>Add sub task</ListItemText>
-          </MenuItem>
+          {!task.parent ? (
+            <MenuItem>
+              <ListItemText onClick={handleAddSubTask}>
+                Add sub task
+              </ListItemText>
+            </MenuItem>
+          ) : null}
           <MenuItem color="error">
             <ListItemText onClick={handleDelete}>Delete</ListItemText>
           </MenuItem>
           <Divider />
-          {tasklistState.items.map((tasklist) => {
-            if (tasklist.id === tasklistState.selected?.id!) {
+          {tasklistState.items.map((list) => {
+            if (list.id === tasklistState.selected?.id!) {
               return (
-                <MenuItem key={tasklist.id}>
+                <MenuItem key={list.id}>
                   <ListItemIcon>
                     <Check />
                   </ListItemIcon>
-                  {tasklist.title}
+                  {list.title}
                 </MenuItem>
               );
             }
             return (
-              <MenuItem key={tasklist.id}>
-                <ListItemText inset>{tasklist.title}</ListItemText>
+              <MenuItem key={list.id} onClick={() => handleMoveTask(list)}>
+                <ListItemText inset>{list.title}</ListItemText>
               </MenuItem>
             );
           })}
