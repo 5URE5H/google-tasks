@@ -205,7 +205,8 @@
   opacity: 1;
 }
 
-.custom-task-container:hover .task-menu-btn {
+.custom-task-container:hover .task-menu-btn,
+.custom-task-container-dark:hover .task-menu-btn {
   opacity: 1;
 }
 
