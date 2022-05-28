@@ -20,6 +20,10 @@ import Avatar from "@mui/material/Avatar";
 import Logo from "../assets/images/logo.png";
 import { useUserSession } from "../store/User.store";
 import Logout from "./auth/Logout";
+import { useThemeSwitch } from "../store/ThemeSwitch.store";
+import { SWITCH_COLOR_MODE } from "../store/constants";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import NightlightIcon from "@mui/icons-material/Nightlight";
 
 // const settings = [];
 
@@ -65,6 +69,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function TaskHeader() {
   const [userState, userDispatch] = useUserSession();
+  const [themeState, themeDispatch] = useThemeSwitch();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -106,6 +111,13 @@ export default function TaskHeader() {
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
+  };
+
+  const toggleTheme = () => {
+    themeDispatch({
+      type: SWITCH_COLOR_MODE,
+      payload: !themeState.isDarkMode,
+    });
   };
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -190,7 +202,7 @@ export default function TaskHeader() {
     <>
       <AppBar
         position="fixed"
-        className="custom-header"
+        className={themeState.isDarkMode ? "" : "custom-header"}
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         <Toolbar>
@@ -209,7 +221,7 @@ export default function TaskHeader() {
           >
             Tasks
           </Typography>
-          <Search>
+          {/* <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -217,24 +229,18 @@ export default function TaskHeader() {
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
             />
-          </Search>
+          </Search> */}
           <Box sx={{ flexGrow: 1 }} />
           <Box
             sx={{ display: { xs: "none", md: "flex" }, marginRight: "1rem" }}
           >
             <IconButton
               size="large"
-              aria-label="show 4 new mails"
+              aria-label="switch to dark/light mode"
               color="inherit"
+              onClick={toggleTheme}
             >
-              <MailIcon />
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <NotificationsIcon />
+              {themeState.isDarkMode ? <LightModeIcon /> : <NightlightIcon />}
             </IconButton>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
@@ -271,8 +277,8 @@ export default function TaskHeader() {
           </Box>
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
+      {/* {renderMobileMenu}
+      {renderMenu} */}
     </>
   );
 }

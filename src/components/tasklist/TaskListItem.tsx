@@ -15,9 +15,9 @@ export default function TaskListItem({ tasklist }: { tasklist: TaskList }) {
     <ListItem
       button
       className={state.selected?.id === tasklist.id ? "active" : ""}
-      style={{
-        color: state.selected?.id === tasklist.id ? "#1976d2" : "inherit",
-      }}
+      // style={{
+      //   color: state.selected?.id === tasklist.id ? "#1976d2" : "inherit",
+      // }}
       onClick={() => onTaskListSelect(tasklist)}
     >
       <ListItemText primary={tasklist.title} />

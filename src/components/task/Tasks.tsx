@@ -18,10 +18,12 @@ import Typography from "@mui/material/Typography";
 import Zero from "../../assets/svg/zero-state.svg";
 import Empty from "../../assets/svg/empty-state.svg";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useThemeSwitch } from "../../store/ThemeSwitch.store";
 
 export default function Tasks({ parent }: { parent?: string }) {
   const [taskListState, taskListDispatch] = useTaskList();
   const [taskState, taskDispatch] = useTask();
+  const [themeState, themeDispatch] = useThemeSwitch();
 
   useEffect(() => {
     taskDispatch({ type: LOADING_TASKS, payload: true });
@@ -95,13 +97,16 @@ export default function Tasks({ parent }: { parent?: string }) {
               </Typography>
             </div>
           )}
-          {taskState.allItems.length && !taskState.items.length && (
+          {!!taskState.allItems.length && !taskState.items.length && (
             <div className="custom-zero-tasks">
               <img
                 src={Empty}
                 alt="Add new tasks"
                 width={"30%"}
-                style={{ marginBottom: "3rem" }}
+                style={{
+                  marginBottom: "3rem",
+                  filter: themeState.isDarkMode ? "invert(0.25)" : "invert(0)",
+                }}
               />
               <Typography variant="h4" gutterBottom component="div">
                 Nicely done!

@@ -89,3 +89,19 @@ export interface UserAction {
 }
 
 export type UserContextType = [UserState, Dispatch<UserAction>];
+
+///////////////////////////////////// ThemeSwitch /////////////////////////////////////
+
+export interface ThemeSwitchState {
+  isDarkMode: boolean;
+}
+
+export interface ThemeSwitchAction {
+  type: string;
+  payload?: any;
+}
+
+export type ThemeSwitchContextType = [
+  ThemeSwitchState,
+  Dispatch<ThemeSwitchAction>
+];

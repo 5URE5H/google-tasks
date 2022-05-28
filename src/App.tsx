@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,28 +10,28 @@ import { TaskListProvider } from "./store/TaskList.store";
 import TaskLists from "./components/tasklist/TaskLists";
 import TaskHeader from "./components/TaskHeader";
 import "./App.css";
-import Container from "@mui/material/Container";
 import TaskInfo from "./components/task/TaskInfo";
+import { ThemeSwitchProvider } from "./store/ThemeSwitch.store";
 
 function App() {
-  useEffect(() => {}, []);
-
   return (
-    <div className="App">
-      <UserProvider>
-        <Box sx={{ display: "flex" }}>
-          <TaskListProvider>
-            <CssBaseline />
-            <TaskHeader />
-            <TaskLists />
-            <TaskProvider>
-              <Tasks />
-              <TaskInfo />
-            </TaskProvider>
-          </TaskListProvider>
-        </Box>
-      </UserProvider>
-    </div>
+    <ThemeSwitchProvider>
+      <div className="App">
+        <UserProvider>
+          <Box sx={{ display: "flex" }}>
+            <TaskListProvider>
+              <CssBaseline />
+              <TaskHeader />
+              <TaskLists />
+              <TaskProvider>
+                <Tasks />
+                <TaskInfo />
+              </TaskProvider>
+            </TaskListProvider>
+          </Box>
+        </UserProvider>
+      </div>
+    </ThemeSwitchProvider>
   );
 }
 

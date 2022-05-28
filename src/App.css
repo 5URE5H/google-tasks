@@ -6,6 +6,10 @@
   grid-template-areas: "only";
 }
 
+.custom-ripple-dark {
+  background-color: #121212;
+}
+
 .custom-ripple-container .custom-ripple {
   grid-area: only / only / only / only;
   height: 18vh;
@@ -94,6 +98,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100vh;
+}
+
+.custom-welcome-dark {
+  background-color: #121212;
+  color: #fff;
+}
+
+.custom-welcome-dark img {
+  filter: invert(0.25);
+}
+
+.custom-welcome-dark button {
+  background-color: #4285F4 !important;
+  color: #fff !important;
 }
 
 .custom-header {

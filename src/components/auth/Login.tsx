@@ -9,11 +9,13 @@ import {
   UPDATE_USER_INFO,
   USER_SIGNED_IN,
 } from "../../store/constants";
+import { useThemeSwitch } from "../../store/ThemeSwitch.store";
 
 interface LoginProps {}
 
 const Login: FunctionComponent<LoginProps> = () => {
   const [state, dispatch] = useUserSession();
+  const [themeState] = useThemeSwitch();
 
   const onSuccess = (res: any) => {
     console.log(res);
@@ -27,7 +29,11 @@ const Login: FunctionComponent<LoginProps> = () => {
   };
 
   return (
-    <div className="custom-welcome-container">
+    <div
+      className={`custom-welcome-container ${
+        themeState.isDarkMode ? "custom-welcome-dark" : ""
+      }`}
+    >
       <img src={Welcome} alt="welcome" width="25%" />
       <Typography variant="h4" gutterBottom component="div">
         Welcome to Tasks

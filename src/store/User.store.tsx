@@ -16,6 +16,7 @@ import { authorizeApi } from "../api";
 import { UserAction, UserContextType, UserState } from "./types";
 import Login from "../components/auth/Login";
 import TaskWelcome from "../components/TaskWelcome";
+import { ThemeSwitchProvider } from "./ThemeSwitch.store";
 
 const initialState = {
   isSignedIn: false,

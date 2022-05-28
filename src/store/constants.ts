@@ -21,3 +21,5 @@ export const UPDATE_TASK = "UPDATE_TASK";
 export const DELETE_TASK = "DELETE_TASK";
 export const LOADING_TASKS = "LOADING_TASKS";
 export const SELECT_TASK = "SELECT_TASK";
+
+export const SWITCH_COLOR_MODE = "SWITCH_COLOR_MODE";
