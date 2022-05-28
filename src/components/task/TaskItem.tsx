@@ -124,7 +124,10 @@ export default function TaskItem({
         );
       } else {
         addTaskApi({ taskListId: tasklist.id }).then((response: any) => {
-          taskDispatch({ type: ADD_TASK, payload: response });
+          taskDispatch({
+            type: ADD_TASK,
+            payload: { task: response, previousTask: task },
+          });
         });
       }
     }

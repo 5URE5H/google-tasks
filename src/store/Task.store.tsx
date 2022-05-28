@@ -12,7 +12,13 @@ import {
   SELECT_TASK,
   UPDATE_TASK,
 } from "./constants";
-import { TaskAction, TaskContextType, TaskState, TaskStatus } from "./types";
+import {
+  Task,
+  TaskAction,
+  TaskContextType,
+  TaskState,
+  TaskStatus,
+} from "./types";
 
 const initialState: TaskState = {
   allItems: [],
@@ -23,6 +29,22 @@ const initialState: TaskState = {
 };
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined);
+
+const insertTask = (items: Task[], item: Task, selected: Task): Task[] => {
+  const previousIndex = items.findIndex((task) => task.id === selected.id);
+  if (previousIndex === -1) {
+    return [item, ...items];
+  }
+
+  const result: Task[] = [];
+  items.forEach((task) => {
+    result.push(task);
+    if (selected.id === task.id) {
+      result.push(item);
+    }
+  });
+  return result;
+};
 
 const taskReducer = (state: TaskState, action: TaskAction) => {
   switch (action.type) {
@@ -58,9 +80,13 @@ const taskReducer = (state: TaskState, action: TaskAction) => {
     case ADD_TASK:
       return {
         ...state,
-        items: [action.payload, ...state.items],
-        allItems: [action.payload, ...state.allItems],
-        selectedItem: action.payload,
+        items: insertTask(
+          state.items,
+          action.payload.task,
+          action.payload.previousTask
+        ),
+        allItems: [action.payload.task, ...state.allItems],
+        selectedItem: action.payload.task,
       };
     case CREATE_SUB_TASK:
       return {
