@@ -206,7 +206,7 @@ export default function TaskHeader() {
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         <Toolbar>
-          <img src={Logo} alt="logo" width={50} />
+          <img src={Logo} alt="logo" width={40} />
           <Typography
             variant="h6"
             noWrap
@@ -215,7 +215,7 @@ export default function TaskHeader() {
               display: {
                 xs: "none",
                 sm: "block",
-                fontWeight: "bold",
+                marginLeft: ".75rem",
               },
             }}
           >

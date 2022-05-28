@@ -122,10 +122,11 @@ export const deleteTaskApi = ({ taskListId, taskId }: any) => {
   return makeRequest(request);
 };
 
-export const moveTaskApi = ({ taskListId, taskId }: any) => {
+export const moveTaskApi = ({ taskListId, taskId, ...params }: any) => {
   const request = gapi.client.tasks.tasks.move({
     tasklist: taskListId,
     task: taskId,
+    ...params,
   });
 
   return makeRequest(request);

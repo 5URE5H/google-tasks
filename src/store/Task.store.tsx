@@ -1,5 +1,7 @@
 import { createContext, ReactNode, useContext, useReducer } from "react";
 import {
+  ADD_SUB_TASK,
+  ADD_TASK,
   CREATE_SUB_TASK,
   CREATE_TASK,
   DELETE_TASK,
@@ -53,11 +55,24 @@ const taskReducer = (state: TaskState, action: TaskAction) => {
         allItems: [action.payload, ...state.allItems],
         selectedItem: action.payload,
       };
+    case ADD_TASK:
+      return {
+        ...state,
+        items: [action.payload, ...state.items],
+        allItems: [action.payload, ...state.allItems],
+        selectedItem: action.payload,
+      };
     case CREATE_SUB_TASK:
       return {
         ...state,
         allItems: [action.payload, ...state.allItems],
-        selectedItem: undefined,
+        selectedItem: action.payload,
+      };
+    case ADD_SUB_TASK:
+      return {
+        ...state,
+        allItems: [...state.allItems, action.payload],
+        selectedItem: action.payload,
       };
     case UPDATE_TASK:
       return {

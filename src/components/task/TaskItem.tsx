@@ -1,7 +1,19 @@
 import Radio from "@mui/material/Radio";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { deleteTaskApi, updateTaskApi } from "../../api";
-import { DELETE_TASK, FETCH_TASKS, UPDATE_TASK } from "../../store/constants";
+import {
+  KeyboardEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { addTaskApi, deleteTaskApi, updateTaskApi } from "../../api";
+import {
+  ADD_SUB_TASK,
+  ADD_TASK,
+  DELETE_TASK,
+  FETCH_TASKS,
+  UPDATE_TASK,
+} from "../../store/constants";
 import { useTask } from "../../store/Task.store";
 import { Task, TaskList, TaskStatus } from "../../store/types";
 import NotesIcon from "@mui/icons-material/Notes";
@@ -101,6 +113,23 @@ export default function TaskItem({
     }
   };
 
+  const handleKeyPress: KeyboardEventHandler<HTMLTextAreaElement> = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      if (task.parent) {
+        addTaskApi({ taskListId: tasklist.id, parent: task.parent }).then(
+          (response: any) => {
+            taskDispatch({ type: ADD_SUB_TASK, payload: response });
+          }
+        );
+      } else {
+        addTaskApi({ taskListId: tasklist.id }).then((response: any) => {
+          taskDispatch({ type: ADD_TASK, payload: response });
+        });
+      }
+    }
+  };
+
   return (
     <div>
       <div
@@ -145,6 +174,7 @@ export default function TaskItem({
               placeholder={isFocused || isNotesFocused ? "Title" : ""}
               defaultValue={title}
               onChange={(e) => handleTitleChange(e.target.value)}
+              onKeyPress={handleKeyPress}
               style={{
                 width: "100%",
                 resize: "none",
