@@ -11,7 +11,6 @@ export default function TaskChildren({ parent }: { parent?: string }) {
   const [children, setChildren] = useState<Task[]>([]);
 
   useEffect(() => {
-    console.log("Task Children", parent, taskState);
     if (parent) {
       const childrenTasks = taskState.allItems.filter(
         (task) =>

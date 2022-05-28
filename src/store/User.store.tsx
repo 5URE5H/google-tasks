@@ -16,7 +16,7 @@ import { authorizeApi } from "../api";
 import { UserAction, UserContextType, UserState } from "./types";
 import Login from "../components/auth/Login";
 import TaskWelcome from "../components/TaskWelcome";
-import { ThemeSwitchProvider } from "./ThemeSwitch.store";
+import { CLIENT_ID } from "../config";
 
 const initialState = {
   isSignedIn: false,
@@ -24,6 +24,7 @@ const initialState = {
   userInfo: undefined,
 };
 
+let auth2;
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 const UserReducer = (state: UserState, action: UserAction) => {
@@ -44,24 +45,21 @@ const UserReducer = (state: UserState, action: UserAction) => {
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(UserReducer, initialState);
 
+  const signinChanged = (val: any) => {
+    if (val) {
+      dispatch({ type: USER_SIGNED_IN });
+    } else {
+      dispatch({ type: USER_SIGNED_OUT });
+    }
+    dispatch({ type: APP_LOADED });
+  };
+
   useEffect(() => {
     gapi.load("client:auth2", () => {
       authorizeApi({ immediate: true })
         .then(() => {
-          let isUserSignedIn = false;
-
-          if (gapi.auth2?.getAuthInstance()) {
-            isUserSignedIn = gapi.auth2
-              ?.getAuthInstance()
-              .isSignedIn.get() as boolean;
-          }
-
-          if (isUserSignedIn) {
-            dispatch({ type: USER_SIGNED_IN });
-          } else {
-            dispatch({ type: USER_SIGNED_OUT });
-          }
-          dispatch({ type: APP_LOADED });
+          auth2 = gapi.auth2?.init({ client_id: CLIENT_ID });
+          auth2.isSignedIn.listen(signinChanged);
         })
         .catch((err) => {
           dispatch({ type: APP_LOADED });

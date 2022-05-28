@@ -1,21 +1,15 @@
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Input from "@mui/material/Input";
 import Radio from "@mui/material/Radio";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { deleteTaskApi, updateTaskApi } from "../../api";
-import { useDebounce } from "../../hooks/useDebounce";
 import { DELETE_TASK, FETCH_TASKS, UPDATE_TASK } from "../../store/constants";
 import { useTask } from "../../store/Task.store";
 import { Task, TaskList, TaskStatus } from "../../store/types";
 import NotesIcon from "@mui/icons-material/Notes";
-import EventIcon from "@mui/icons-material/Event";
 import TaskMenu from "./TaskMenu";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { useFocus } from "../../hooks/useFocus";
-import Tasks from "./Tasks";
 import TaskChildren from "./TaskChildren";
 import * as _ from "lodash";
-import { useHover } from "../../hooks/useHover";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import CheckIcon from "@mui/icons-material/Check";
@@ -46,8 +40,6 @@ export default function TaskItem({
 
   const updateTask = useCallback(
     ({ taskListId, taskId, title, notes, status }: any) => {
-      console.log("updated called");
-
       updateTaskApi({
         taskListId,
         taskId,
