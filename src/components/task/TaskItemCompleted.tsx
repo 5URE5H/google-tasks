@@ -10,6 +10,7 @@ import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { useThemeSwitch } from "../../store/ThemeSwitch.store";
 
 export default function TaskItemCompleted({
   task,
@@ -20,6 +21,7 @@ export default function TaskItemCompleted({
 }) {
   const [taskState, taskDispatch] = useTask();
   const [isCompleted, setIsCompleted] = useState(false);
+  const [themeState] = useThemeSwitch();
 
   const [title, setTitle] = useState(task.title);
   const [status, setStatus] = useState(task.status);
@@ -48,7 +50,13 @@ export default function TaskItemCompleted({
 
   return (
     <div>
-      <div className="custom-task-container">
+      <div
+        className={
+          themeState.isDarkMode
+            ? "custom-task-container-dark"
+            : "custom-task-container"
+        }
+      >
         <div className="custom-task">
           <div className="custom-checkbox-container">
             <Tooltip

@@ -19,6 +19,7 @@ import { useHover } from "../../hooks/useHover";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import CheckIcon from "@mui/icons-material/Check";
+import { useThemeSwitch } from "../../store/ThemeSwitch.store";
 
 export default function TaskItem({
   task,
@@ -31,6 +32,7 @@ export default function TaskItem({
   const [updateTaskRef, isFocused, taskRef] = useFocus();
   const [updateNotesRef, isNotesFocused] = useFocus();
   const [isCompleted, setIsCompleted] = useState(false);
+  const [themeState] = useThemeSwitch();
 
   const [title, setTitle] = useState(task.title);
   const [notes, setNotes] = useState(task.notes);
@@ -110,8 +112,16 @@ export default function TaskItem({
   return (
     <div>
       <div
-        className={`custom-task-container ${
-          isFocused || isNotesFocused ? "custom-task-focused" : ""
+        className={`${
+          themeState.isDarkMode
+            ? "custom-task-container-dark"
+            : "custom-task-container"
+        } ${
+          isFocused || isNotesFocused
+            ? themeState.isDarkMode
+              ? "custom-task-focused-dark"
+              : "custom-task-focused"
+            : ""
         }`}
       >
         <div className="custom-task">

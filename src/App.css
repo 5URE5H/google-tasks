@@ -1,3 +1,8 @@
+:root {
+  --hover-color: rgba(0, 0, 0, 0.04);
+  --hover-color-dark: rgba(255, 255, 255, 0.08);
+}
+
 .custom-ripple-container {
   height: 100vh;
   overflow: hidden;
@@ -117,7 +122,7 @@
 
 .custom-header {
   color: #666665 !important;
-  background-color: white !important;
+  background-color: #fff !important;
   box-shadow: none !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
@@ -154,7 +159,8 @@
   margin: 0.65rem 0 0.25rem;
 }
 
-.custom-task-container {
+.custom-task-container,
+.custom-task-container-dark {
   padding: 0 1rem 0 1rem;
 }
 
@@ -179,19 +185,33 @@
 }
 
 .custom-task-focused {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: var(--hover-color);
+}
+
+.custom-task-focused-dark {
+  background-color: var(--hover-color-dark);
 }
 
 .custom-task-container:hover {
   text-decoration: none;
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: var(--hover-color);
 }
 
-.MuiListItem-button.active {
-  background-color: rgba(0, 0, 0, 0.04);
+.custom-task-container-dark:hover {
+  text-decoration: none;
+  background-color: var(--hover-color-dark);
 }
 
-.custom-child-tasks .custom-task-container {
+.tasklist-list-item.active {
+  background-color: var(--hover-color);
+}
+
+.tasklist-list-item-dark.active {
+  background-color: var(--hover-color-dark);
+}
+
+.custom-child-tasks .custom-task-container,
+.custom-child-tasks .custom-task-container-dark {
   padding-left: 3rem;
 }
 

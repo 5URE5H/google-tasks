@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
 import { useTaskList } from "../../store/TaskList.store";
 import { FETCH_TASKLISTS, SELECT_TASKLIST } from "../../store/constants";
 import TextField from "@mui/material/TextField";
